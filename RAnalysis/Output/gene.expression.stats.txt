@@ -1,0 +1,36 @@
+                Df Sum Sq Mean Sq F value Pr(>F)  
+Temperature      1  484.4   484.4   3.630 0.0932 .
+CO2              1   24.1    24.1   0.180 0.6823  
+Temperature:CO2  1   47.8    47.8   0.359 0.5659  
+Residuals        8 1067.4   133.4                 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+                Df Sum Sq Mean Sq F value Pr(>F)
+Temperature      1 0.3020 0.30196   2.547  0.149
+CO2              1 0.0056 0.00559   0.047  0.833
+Temperature:CO2  1 0.2044 0.20441   1.724  0.226
+Residuals        8 0.9483 0.11854               
+                Df Sum Sq Mean Sq F value Pr(>F)  
+Temperature      1 0.5529  0.5529   4.010 0.0802 .
+CO2              1 0.1030  0.1030   0.747 0.4125  
+Temperature:CO2  1 0.1815  0.1815   1.316 0.2844  
+Residuals        8 1.1031  0.1379                 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+                Df Sum Sq Mean Sq F value Pr(>F)  
+Temperature      1 0.8074  0.8074   3.766 0.0883 .
+CO2              1 0.0276  0.0276   0.129 0.7292  
+Temperature:CO2  1 0.1323  0.1323   0.617 0.4547  
+Residuals        8 1.7153  0.2144                 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+                Df Sum Sq Mean Sq F value Pr(>F)
+Temperature      1 0.4741  0.4741   2.341  0.165
+CO2              1 0.0535  0.0535   0.264  0.621
+Temperature:CO2  1 0.1992  0.1992   0.984  0.350
+Residuals        8 1.6200  0.2025               
+                Df Sum Sq Mean Sq F value Pr(>F)
+Temperature      1 0.2665 0.26646   1.529  0.251
+CO2              1 0.0050 0.00496   0.028  0.870
+Temperature:CO2  1 0.1431 0.14307   0.821  0.391
+Residuals        8 1.3946 0.17432               
