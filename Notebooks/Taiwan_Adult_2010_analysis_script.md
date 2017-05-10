@@ -264,8 +264,103 @@ GATCGGAAGAGCACACGTCTGAACTCCAGTCAATTCCTAATCTCGTATGCCGTCTTCTGCTTG
 ```cat 15-6A_CTTGTA_L005_R2_001.fastq.gz 15-6A_CTTGTA_L005_R2_002.fastq.gz > 15-6_R2.fastq.gz```
 
 ## Compare number of sequences between original and concatenated files
-zgrep -c "@HWUSI" *.fastq.gz
-
+```zgrep -c "@HWUSI" *.fastq.gz```
+10--17_AGTCAA_L002_R1_001.fastq.gz:4000000
+10--17_AGTCAA_L002_R1_002.fastq.gz:2567688
+10--17_AGTCAA_L002_R2_001.fastq.gz:4000000
+10--17_AGTCAA_L002_R2_002.fastq.gz:2567688
+10-17_R1.fastq.gz:6567688
+10-17_R2.fastq.gz:6567688
+10--18_AGTTCC_L002_R1_001.fastq.gz:4000000
+10--18_AGTTCC_L002_R1_002.fastq.gz:1986188
+10--18_AGTTCC_L002_R2_001.fastq.gz:4000000
+10--18_AGTTCC_L002_R2_002.fastq.gz:1986188
+10-18_R1.fastq.gz:5986188
+10-18_R2.fastq.gz:5986188
+10--20_ATGTCA_L002_R1_001.fastq.gz:4000000
+10--20_ATGTCA_L002_R1_002.fastq.gz:3793951
+10--20_ATGTCA_L002_R2_001.fastq.gz:4000000
+10--20_ATGTCA_L002_R2_002.fastq.gz:3793951
+10-20_R1.fastq.gz:7793951
+10-20_R2.fastq.gz:7793951
+10--28_CCGTCC_L002_R1_001.fastq.gz:4000000
+10--28_CCGTCC_L002_R1_002.fastq.gz:4000000
+10--28_CCGTCC_L002_R1_003.fastq.gz:302479
+10--28_CCGTCC_L002_R2_001.fastq.gz:4000000
+10--28_CCGTCC_L002_R2_002.fastq.gz:4000000
+10--28_CCGTCC_L002_R2_003.fastq.gz:302479
+10-28_R1.fastq.gz:8302479
+10-28_R2.fastq.gz:8302479
+10--30_GTCCGC_L002_R1_001.fastq.gz:4000000
+10--30_GTCCGC_L002_R1_002.fastq.gz:2581372
+10--30_GTCCGC_L002_R2_001.fastq.gz:4000000
+10--30_GTCCGC_L002_R2_002.fastq.gz:2581372
+10-30_R1.fastq.gz:6581372
+10-30_R2.fastq.gz:6581372
+10--32_GTGAAA_L002_R1_001.fastq.gz:4000000
+10--32_GTGAAA_L002_R1_002.fastq.gz:2493985
+10--32_GTGAAA_L002_R2_001.fastq.gz:4000000
+10--32_GTGAAA_L002_R2_002.fastq.gz:2493985
+10-32_R1.fastq.gz:6493985
+10-32_R2.fastq.gz:6493985
+12-14A_AGTCAA_L005_R1_001.fastq.gz:4000000
+12-14A_AGTCAA_L005_R1_002.fastq.gz:153808
+12-14A_AGTCAA_L005_R2_001.fastq.gz:4000000
+12-14A_AGTCAA_L005_R2_002.fastq.gz:153808
+12-14_R1.fastq.gz:4153808
+12-14_R2.fastq.gz:4153808
+12-2B_TGACCA_L005_R1_001.fastq.gz:3257535
+12-2B_TGACCA_L005_R2_001.fastq.gz:3257535
+12-2_R1.fastq.gz:3257535
+12-2_R2.fastq.gz:3257535
+12-7A_CGATGT_L005_R1_001.fastq.gz:3492526
+12-7A_CGATGT_L005_R2_001.fastq.gz:3492526
+12-7_R1.fastq.gz:3492526
+12-7_R2.fastq.gz:3492526
+13-10A_AGTTCC_L005_R1_001.fastq.gz:3246564
+13-10A_AGTTCC_L005_R2_001.fastq.gz:3246564
+13-10_R1.fastq.gz:3246564
+13-10_R2.fastq.gz:3246564
+13-13A_GTCCGC_L005_R1_001.fastq.gz:4000000
+13-13A_GTCCGC_L005_R1_002.fastq.gz:133291
+13-13A_GTCCGC_L005_R2_001.fastq.gz:4000000
+13-13A_GTCCGC_L005_R2_002.fastq.gz:133291
+13-13_R1.fastq.gz:4133291
+13-13_R2.fastq.gz:4133291
+13-16A_GCCAAT_L005_R1_001.fastq.gz:161
+13-16A_GCCAAT_L005_R2_001.fastq.gz:161
+13-16_R1.fastq.gz:161
+13-16_R2.fastq.gz:161
+13-9A_backup_CAGATC_L005_R1_001.fastq.gz:3866849
+13-9A_backup_CAGATC_L005_R2_001.fastq.gz:3866849
+13-9_R1.fastq.gz:3866849
+13-9_R2.fastq.gz:3866849
+14-11A_backup_ACAGTG_L005_R1_001.fastq.gz:4000000
+14-11A_backup_ACAGTG_L005_R1_002.fastq.gz:3720664
+14-11A_backup_ACAGTG_L005_R2_001.fastq.gz:4000000
+14-11A_backup_ACAGTG_L005_R2_002.fastq.gz:3720664
+14-11_R1.fastq.gz:7720664
+14-11_R2.fastq.gz:7720664
+14-12A_CCGTCC_L005_R1_001.fastq.gz:4000000
+14-12A_CCGTCC_L005_R1_002.fastq.gz:186133
+14-12A_CCGTCC_L005_R2_001.fastq.gz:4000000
+14-12A_CCGTCC_L005_R2_002.fastq.gz:186133
+14-12_R1.fastq.gz:4186133
+14-12_R2.fastq.gz:4186133
+14-8A_backup_ATGTCA_L005_R1_001.fastq.gz:3571099
+14-8A_backup_ATGTCA_L005_R2_001.fastq.gz:3571099
+14-8_R1.fastq.gz:3571099
+14-8_R2.fastq.gz:3571099
+15-3A_GTGAAA_L005_R1_001.fastq.gz:3588814
+15-3A_GTGAAA_L005_R2_001.fastq.gz:3588814
+15-3_R1.fastq.gz:3588814
+15-3_R2.fastq.gz:3588814
+15-6A_CTTGTA_L005_R1_001.fastq.gz:4000000
+15-6A_CTTGTA_L005_R1_002.fastq.gz:757944
+15-6A_CTTGTA_L005_R2_001.fastq.gz:4000000
+15-6A_CTTGTA_L005_R2_002.fastq.gz:757944
+15-6_R1.fastq.gz:4757944
+15-6_R2.fastq.gz:4757944
 
 ## Check quality of datafiles
 * fastqc
@@ -292,47 +387,28 @@ do
 -x 10 \
 -u \
 -P 33 \
--o /home/hputnam/Pdam_Taiwan_2010/Assembly_Data/Cleaned_Data/${file}_1_cleaned.fastq \
--o /home/hputnam/Pdam_Taiwan_2010/Assembly_Data/Cleaned_Data/${file}_2_cleaned.fastq &> /home/hputnam/Pdam_Taiwan_2010/Assembly_Data/Cleaned_Data/${file}.log
+-o /home/hputnam/Pdam_Taiwan_2010/Assembly_Data/Cleaned_Data/${file}_R1_cleaned.fastq \
+-o /home/hputnam/Pdam_Taiwan_2010/Assembly_Data/Cleaned_Data/${file}_R2_cleaned.fastq &> /home/hputnam/Pdam_Taiwan_2010/Assembly_Data/Cleaned_Data/${file}.log
 done'```
 
 ### Adult and Larval Data
 ```mkdir /home/hputnam/Pdam_Taiwan_2010/Assembly_Data/Cleaned_Data/```
 
-```nohup sh -c 'for file in "10--17_AGTCAA_L002_R1_001.fastq.gz"  "10--30_GTCCGC_L002_R2_002.fastq.gz"  "13-9A_backup_CAGATC_L005_R1_001.fastq.gz"
-"10--17_AGTCAA_L002_R1_002.fastq.gz"  "10--32_GTGAAA_L002_R1_001.fastq.gz"  "13-9A_backup_CAGATC_L005_R2_001.fastq.gz"
-"10--17_AGTCAA_L002_R2_001.fastq.gz"  "10--32_GTGAAA_L002_R1_002.fastq.gz"  "14-11A_backup_ACAGTG_L005_R1_001.fastq.gz"
-"10--17_AGTCAA_L002_R2_002.fastq.gz"  "10--32_GTGAAA_L002_R2_001.fastq.gz"  "14-11A_backup_ACAGTG_L005_R1_002.fastq.gz"
-"10--18_AGTTCC_L002_R1_001.fastq.gz"  "10--32_GTGAAA_L002_R2_002.fastq.gz"  "14-11A_backup_ACAGTG_L005_R2_001.fastq.gz"
-"10--18_AGTTCC_L002_R1_002.fastq.gz"  "12-14A_AGTCAA_L005_R1_001.fastq.gz"  "14-11A_backup_ACAGTG_L005_R2_002.fastq.gz"
-"10--18_AGTTCC_L002_R2_001.fastq.gz"  "12-14A_AGTCAA_L005_R1_002.fastq.gz"  "14-12A_CCGTCC_L005_R1_001.fastq.gz"
-"10--18_AGTTCC_L002_R2_002.fastq.gz"  "12-14A_AGTCAA_L005_R2_001.fastq.gz"  "14-12A_CCGTCC_L005_R1_002.fastq.gz"
-"10--20_ATGTCA_L002_R1_001.fastq.gz"  "12-14A_AGTCAA_L005_R2_002.fastq.gz"  "14-12A_CCGTCC_L005_R2_001.fastq.gz"
-"10--20_ATGTCA_L002_R1_002.fastq.gz"  "12-2B_TGACCA_L005_R1_001.fastq.gz"   "14-12A_CCGTCC_L005_R2_002.fastq.gz"
-"10--20_ATGTCA_L002_R2_001.fastq.gz"  "12-2B_TGACCA_L005_R2_001.fastq.gz"   "14-8A_backup_ATGTCA_L005_R1_001.fastq.gz"
-"10--20_ATGTCA_L002_R2_002.fastq.gz"  "12-7A_CGATGT_L005_R1_001.fastq.gz"   "14-8A_backup_ATGTCA_L005_R2_001.fastq.gz"
-"10--28_CCGTCC_L002_R1_001.fastq.gz"  "12-7A_CGATGT_L005_R2_001.fastq.gz"   "15-3A_GTGAAA_L005_R1_001.fastq.gz"
-"10--28_CCGTCC_L002_R1_002.fastq.gz"  "13-10A_AGTTCC_L005_R1_001.fastq.gz"  "15-3A_GTGAAA_L005_R2_001.fastq.gz"
-"10--28_CCGTCC_L002_R1_003.fastq.gz"  "13-10A_AGTTCC_L005_R2_001.fastq.gz"  "15-6A_CTTGTA_L005_R1_001.fastq.gz"
-"10--28_CCGTCC_L002_R2_001.fastq.gz"  "13-13A_GTCCGC_L005_R1_001.fastq.gz"  "15-6A_CTTGTA_L005_R1_002.fastq.gz"
-"10--28_CCGTCC_L002_R2_002.fastq.gz"  "13-13A_GTCCGC_L005_R1_002.fastq.gz"  "15-6A_CTTGTA_L005_R2_001.fastq.gz"
-"10--28_CCGTCC_L002_R2_003.fastq.gz"  "13-13A_GTCCGC_L005_R2_001.fastq.gz"  "15-6A_CTTGTA_L005_R2_002.fastq.gz"
-"10--30_GTCCGC_L002_R1_001.fastq.gz"  "13-13A_GTCCGC_L005_R2_002.fastq.gz"  
-"10--30_GTCCGC_L002_R1_002.fastq.gz"  "13-16A_GCCAAT_L005_R1_001.fastq.gz" 
-"10--30_GTCCGC_L002_R2_001.fastq.gz"  "13-16A_GCCAAT_L005_R2_001.fastq.gz"
+```nohup sh -c 'for file in "10-17" "10-18" "10-20" "10-28" "10-30" "10-32" "12-14" \
+"12-2" "12-7" "13-10" "13-13" "13-16" "13-9" "14-11" "14-12" "14-8" "15-3" "15-6"
 do
 /home/hputnam/programs/ea-utils.1.1.2-806/fastq-mcf \
 /home/hputnam/Mcap_Spawn/Refs/barcodes.fa \
-/home/hputnam/Pdam_Taiwan_2010/Assembly_Data/RawData/${file}_R1_001.fastq.gz \
-/home/hputnam/Pdam_Taiwan_2010/Assembly_Data/RawData/${file}_R2_001.fastq.gz \
+/home/hputnam/Pdam_Taiwan_2010/Assembly_Data/RawData/${file}_R1.fastq.gz \
+/home/hputnam/Pdam_Taiwan_2010/Assembly_Data/RawData/${file}_R2.fastq.gz \
 -l 100 \
 -q 20 \
 -w 5 \
 -x 10 \
 -u \
 -P 33 \
--o /home/hputnam/Pdam_Taiwan_2010/Assembly_Data/Cleaned_Data/${file}_1_cleaned.fastq \
--o /home/hputnam/Pdam_Taiwan_2010/Assembly_Data/Cleaned_Data/${file}_2_cleaned.fastq &> /home/hputnam/Pdam_Taiwan_2010/Assembly_Data/Cleaned_Data/${file}.log
+-o /home/hputnam/Pdam_Taiwan_2010/Assembly_Data/Cleaned_Data/${file}_R1_cleaned.fastq \
+-o /home/hputnam/Pdam_Taiwan_2010/Assembly_Data/Cleaned_Data/${file}_R2_cleaned.fastq &> /home/hputnam/Pdam_Taiwan_2010/Assembly_Data/Cleaned_Data/${file}.log
 done'```
 
 #check quality
