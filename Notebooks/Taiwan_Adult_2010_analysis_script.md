@@ -369,6 +369,15 @@ GATCGGAAGAGCACACGTCTGAACTCCAGTCAATTCCTAATCTCGTATGCCGTCTTCTGCTTG
 
 ```/home/hputnam/programs/FastQC/fastqc /home/hputnam/Pdam_Taiwan_2010/Assembly_Data/RawData/*_R*.fastq.gz -o /home/hputnam/Pdam_Taiwan_2010/Assembly_Data/Raw_QC_Files```
 
+## Examine FASTQC Results of raw files
+```scp -r hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/Data/Raw_QC_Files /home/hputnam/Pdam_Taiwan_2010/Adult/Data/Raw_QC_Files```
+
+
+## Run multicq from raw qc folder to combine results from all files
+http://multiqc.info/
+
+```multiqc .```
+
 
 ## Clean files
 
@@ -421,212 +430,12 @@ done'```
 ```scp -r hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Pdam_Taiwan_2010/Assembly_Data/Cleaned_QC_Files /Users/hputnam/MyProjects/Taiwan_Pacuta_adult_GCC/BioInf/Raw_QC_Files```
 
 
-
-
-#Samples from Taiwan 2010 Adult experiment 
-* 12 libraries from 4 treatments (n=3 per treatment)
-
-# Count RAW Reads
-```zgrep -c "@HW" *.fastq.gz```
-
-* 12-14A_AGTCAA_L005_R1_001.fastq.gz:4000000
-* 12-14A_AGTCAA_L005_R1_002.fastq.gz:153808
-* 12-14A_AGTCAA_L005_R2_001.fastq.gz:4000000
-* 12-14A_AGTCAA_L005_R2_002.fastq.gz:153808
-* 12-2B_TGACCA_L005_R1_001.fastq.gz:3257535
-* 12-2B_TGACCA_L005_R2_001.fastq.gz:3257535
-* 12-7A_CGATGT_L005_R1_001.fastq.gz:3492526
-* 12-7A_CGATGT_L005_R2_001.fastq.gz:3492526
-* 13-10A_AGTTCC_L005_R1_001.fastq.gz:3246564
-* 13-10A_AGTTCC_L005_R2_001.fastq.gz:3246564
-* 13-13A_GTCCGC_L005_R1_001.fastq.gz:4000000
-* 13-13A_GTCCGC_L005_R1_002.fastq.gz:133291
-* 13-13A_GTCCGC_L005_R2_001.fastq.gz:4000000
-* 13-13A_GTCCGC_L005_R2_002.fastq.gz:133291
-* 13-16A_GCCAAT_L005_R1_001.fastq.gz:161
-* 13-16A_GCCAAT_L005_R2_001.fastq.gz:161
-* 13-9A_backup_CAGATC_L005_R1_001.fastq.gz:3866849
-* 13-9A_backup_CAGATC_L005_R2_001.fastq.gz:3866849
-* 14-11A_backup_ACAGTG_L005_R1_001.fastq.gz:4000000
-* 14-11A_backup_ACAGTG_L005_R1_002.fastq.gz:3720664
-* 14-11A_backup_ACAGTG_L005_R2_001.fastq.gz:4000000
-* 14-11A_backup_ACAGTG_L005_R2_002.fastq.gz:3720664
-* 14-12A_CCGTCC_L005_R1_001.fastq.gz:4000000
-* 14-12A_CCGTCC_L005_R1_002.fastq.gz:186133
-* 14-12A_CCGTCC_L005_R2_001.fastq.gz:4000000
-* 14-12A_CCGTCC_L005_R2_002.fastq.gz:186133
-* 14-8A_backup_ATGTCA_L005_R1_001.fastq.gz:3571099
-* 14-8A_backup_ATGTCA_L005_R2_001.fastq.gz:3571099
-* 15-3A_GTGAAA_L005_R1_001.fastq.gz:3588814
-* 15-3A_GTGAAA_L005_R2_001.fastq.gz:3588814
-* 15-6A_CTTGTA_L005_R1_001.fastq.gz:4000000
-* 15-6A_CTTGTA_L005_R1_002.fastq.gz:757944
-* 15-6A_CTTGTA_L005_R2_001.fastq.gz:4000000
-* 15-6A_CTTGTA_L005_R2_002.fastq.gz:757944
-
-* Exclude sample 13-16A where run failed.
-
-
-# Cat run files (1 and 2) AND Count File Reads or rename if single files
-```cat /home/hputnam/Pdam_Taiwan_2010/Adult/Data/12-14A_AGTCAA_L005_R1_001.fastq.gz /home/hputnam/Pdam_Taiwan_2010/Adult/Data/12-14A_AGTCAA_L005_R1_002.fastq.gz > 12-14A_R1.fastq.gz```
-
-```cat /home/hputnam/Pdam_Taiwan_2010/Adult/Data/12-14A_AGTCAA_L005_R2_001.fastq.gz /home/hputnam/Pdam_Taiwan_2010/Adult/Data/12-14A_AGTCAA_L005_R2_002.fastq.gz > 12-14A_R2.fastq.gz```
-
-```mv 12-2B_TGACCA_L005_R1_001.fastq.gz 12-2B_R1.fastq.gz```
-```mv 12-2B_TGACCA_L005_R2_001.fastq.gz 12-2B_R2.fastq.gz```
-
-```mv 12-7A_CGATGT_L005_R1_001.fastq.gz 12-7A_R1.fastq.gz```
-```mv 12-7A_CGATGT_L005_R2_001.fastq.gz 12-7A_R2.fastq.gz```
-
-```mv 13-10A_AGTTCC_L005_R1_001.fastq.gz 13-10A_R1.fastq.gz```
-```mv 13-10A_AGTTCC_L005_R2_001.fastq.gz 13-10A_R2.fastq.gz```
-
-```cat /home/hputnam/Pdam_Taiwan_2010/Adult/Data/13-13A_GTCCGC_L005_R1_001.fastq.gz /home/hputnam/Pdam_Taiwan_2010/Adult/Data/13-13A_GTCCGC_L005_R1_002.fastq.gz > 13-13A_R1.fastq.gz```
-
-```cat /home/hputnam/Pdam_Taiwan_2010/Adult/Data/13-13A_GTCCGC_L005_R2_001.fastq.gz /home/hputnam/Pdam_Taiwan_2010/Adult/Data/13-13A_GTCCGC_L005_R2_002.fastq.gz > 13-13A_R2.fastq.gz```
-
-```mv 13-16A_GCCAAT_L005_R1_001.fastq.gz 13-16A_R1.fastq.gz```
-```mv 13-16A_GCCAAT_L005_R2_001.fastq.gz 13-16A_R2.fastq.gz```
-
-```mv 13-9A_backup_CAGATC_L005_R1_001.fastq.gz 13-9A_R1.fastq.gz```
-```mv 13-9A_backup_CAGATC_L005_R2_001.fastq.gz 13-9A_R2.fastq.gz```
-
-```cat /home/hputnam/Pdam_Taiwan_2010/Adult/Data/14-11A_backup_ACAGTG_L005_R1_001.fastq.gz /home/hputnam/Pdam_Taiwan_2010/Adult/Data/14-11A_backup_ACAGTG_L005_R1_002.fastq.gz > 14-11A_R1.fastq.gz```
-
-```cat /home/hputnam/Pdam_Taiwan_2010/Adult/Data/14-11A_backup_ACAGTG_L005_R2_001.fastq.gz /home/hputnam/Pdam_Taiwan_2010/Adult/Data/14-11A_backup_ACAGTG_L005_R2_002.fastq.gz > 14-11A_R2.fastq.gz```
-
-```cat /home/hputnam/Pdam_Taiwan_2010/Adult/Data/14-12A_CCGTCC_L005_R1_001.fastq.gz /home/hputnam/Pdam_Taiwan_2010/Adult/Data/14-12A_CCGTCC_L005_R1_002.fastq.gz > 14-12A_R1.fastq.gz```
-
-```cat /home/hputnam/Pdam_Taiwan_2010/Adult/Data/14-12A_CCGTCC_L005_R2_001.fastq.gz /home/hputnam/Pdam_Taiwan_2010/Adult/Data/14-12A_CCGTCC_L005_R2_002.fastq.gz > 14-12A_R2.fastq.gz```
-
-```mv 14-8A_backup_ATGTCA_L005_R1_001.fastq.gz 14-8A_R1.fastq.gz```
-```mv 14-8A_backup_ATGTCA_L005_R2_001.fastq.gz 14-8A_R2.fastq.gz```
-
-```mv 15-3A_GTGAAA_L005_R1_001.fastq.gz 15-3A_R1.fastq.gz```
-```mv 15-3A_GTGAAA_L005_R2_001.fastq.gz 15-3A_R2.fastq.gz```
-
-```cat /home/hputnam/Pdam_Taiwan_2010/Adult/Data/15-6A_CTTGTA_L005_R1_001.fastq.gz /home/hputnam/Pdam_Taiwan_2010/Adult/Data/15-6A_CTTGTA_L005_R1_002.fastq.gz > 15-6A_R1.fastq.gz```
-
-```cat /home/hputnam/Pdam_Taiwan_2010/Adult/Data/15-6A_CTTGTA_L005_R2_001.fastq.gz /home/hputnam/Pdam_Taiwan_2010/Adult/Data/15-6A_CTTGTA_L005_R2_002.fastq.gz > 15-6A_R2.fastq.gz```
-
-
-```zgrep -c "@HW" *.fastq.gz```
-
-* 12-14A_R1.fastq.gz:4153808
-* 12-14A_R2.fastq.gz:4153808
-* 12-2B_R1.fastq.gz:3257535
-* 12-2B_R2.fastq.gz:3257535
-* 12-7A_R1.fastq.gz:3492526
-* 12-7A_R2.fastq.gz:3492526
-* 13-10A_R1.fastq.gz:3246564
-* 13-10A_R2.fastq.gz:3246564
-* 13-13A_R1.fastq.gz:4133291
-* 13-13A_R2.fastq.gz:4133291
-* 13-9A_R1.fastq.gz:3866849
-* 13-9A_R2.fastq.gz:3866849
-* 14-11A_R1.fastq.gz:7720664
-* 14-11A_R2.fastq.gz:7720664
-* 14-12A_R1.fastq.gz:4186133
-* 14-12A_R2.fastq.gz:4186133
-* 14-8A_R1.fastq.gz:3571099
-* 14-8A_R2.fastq.gz:3571099
-* 15-3A_R1.fastq.gz:3588814
-* 15-3A_R2.fastq.gz:3588814
-* 15-6A_R1.fastq.gz:4757944
-* 15-6A_R2.fastq.gz:4757944
-
-# Run FASTQC to examine data quality
-```/home/hputnam/programs/FastQC/fastqc /home/hputnam/Pdam_Taiwan_2010/Adult/Data/*fastq.gz -o /home/hputnam/Pdam_Taiwan_2010/Adult/Data/Raw_QC_Files```
-
-# Examine FASTQC Results of raw files
-```scp -r hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/Data/Raw_QC_Files /home/hputnam/Pdam_Taiwan_2010/Adult/Data/Raw_QC_Files```
-
-
-# Run multicq from raw qc folder to combine results from all files
-http://multiqc.info/
-
-```multiqc .```
-
-
-# Trim Adapters and poor quality
-```mkdir /home/hputnam/Pdam_Taiwan_2010/Adult/Data/Clean_Data```
-
-### Used FastqMcf fastq-mcf sequence quality filter, clipping and processor to trim adapters.
-https://expressionanalysis.github.io/ea-utils/
-https://github.com/ExpressionAnalysis/ea-utils
--o = output
--l = minimum remaining sequence length (=150)
--q = quality threshold causing base removal (=20)
--w = window size for quality trimming (=5)
--x = 'N' bad read percentage causing cycle removal (=10)
--u = Force disable/enable Illumina PF filtering default = auto
--P = Phred-scale default = auto
-
-# FastqMcf 
-
-```/home/hputnam/programs/ea-utils.1.1.2-806/fastq-mcf -l 16 -q 20 -w 5 -x 10 -u -P 33 \
-/home/hputnam/Mcap_Spawn/Refs/barcodes.fa \
-/home/hputnam/Pdam_Taiwan_2010/Adult/Data/12-14A_R1.fastq.gz \
-/home/hputnam/Pdam_Taiwan_2010/Adult/Data/12-14A_R2.fastq.gz \
--o /home/hputnam/Pdam_Taiwan_2010/Adult/Data/Clean_Data/12-14A_R1_cleaned.fastq \
--o /home/hputnam/Pdam_Taiwan_2010/Adult/Data/Clean_Data/12-14A_R2_cleaned.fastq &>12-14A.log```
-
-```/home/hputnam/programs/ea-utils.1.1.2-806/fastq-mcf -l 16 -q 20 -w 5 -x 10 -u -P 33 \
-/home/hputnam/Mcap_Spawn/Refs/barcodes.fa \
-/home/hputnam/Pdam_Taiwan_2010/Adult/Data/12-2B_R1.fastq.gz \
-/home/hputnam/Pdam_Taiwan_2010/Adult/Data/12-2B_R2.fastq.gz \
--o /home/hputnam/Pdam_Taiwan_2010/Adult/Data/Clean_Data/12-2B_R1_cleaned.fastq \
--o /home/hputnam/Pdam_Taiwan_2010/Adult/Data/Clean_Data/12-2B_R2_cleaned.fastq &>12-2B.log```
-
-```/home/hputnam/programs/ea-utils.1.1.2-806/fastq-mcf -l 16 -q 20 -w 5 -x 10 -u -P 33 \
-/home/hputnam/Mcap_Spawn/Refs/barcodes.fa \
-/home/hputnam/Pdam_Taiwan_2010/Adult/Data/12-7A_R1.fastq.gz \
-/home/hputnam/Pdam_Taiwan_2010/Adult/Data/12-7A_R2.fastq.gz \
--o /home/hputnam/Pdam_Taiwan_2010/Adult/Data/Clean_Data/12-7A_R1_cleaned.fastq \
--o /home/hputnam/Pdam_Taiwan_2010/Adult/Data/Clean_Data/12-7A_R2_cleaned.fastq &>12-7A.log```
-
-```/home/hputnam/programs/ea-utils.1.1.2-806/fastq-mcf -l 16 -q 20 -w 5 -x 10 -u -P 33 \
-/home/hputnam/Mcap_Spawn/Refs/barcodes.fa \
-/home/hputnam/Pdam_Taiwan_2010/Adult/Data/13-10A_R1.fastq.gz \
-/home/hputnam/Pdam_Taiwan_2010/Adult/Data/13-10A_R2.fastq.gz \
--o /home/hputnam/Pdam_Taiwan_2010/Adult/Data/Clean_Data/13-10A_R1_cleaned.fastq \
--o /home/hputnam/Pdam_Taiwan_2010/Adult/Data/Clean_Data/13-10A_R2_cleaned.fastq &>13-10A.log```
-
-```/home/hputnam/programs/ea-utils.1.1.2-806/fastq-mcf -l 16 -q 20 -w 5 -x 10 -u -P 33 \
-/home/hputnam/Mcap_Spawn/Refs/barcodes.fa \
-/home/hputnam/Pdam_Taiwan_2010/Adult/Data/13-13A_R1.fastq.gz \
-/home/hputnam/Pdam_Taiwan_2010/Adult/Data/13-13A_R2.fastq.gz \
--o /home/hputnam/Pdam_Taiwan_2010/Adult/Data/Clean_Data/13-13A_R1_cleaned.fastq \
--o /home/hputnam/Pdam_Taiwan_2010/Adult/Data/Clean_Data/13-13A_R2_cleaned.fastq &>13-13A.log```
-
 # Count Cleaned Reads
-```grep -c "@HW" /home/hputnam/Pdam_Taiwan_2010/Adult/Data/Clean_Data/*.fastq```
+```zgrep -c "@HW" /home/hputnam/Pdam_Taiwan_2010/Assembly_Data/Cleaned_Data/*.fastq```
 
-12-14A_R1_cleaned.fastq:4083263
-12-14A_R2_cleaned.fastq:4083263
-12-2B_R1_cleaned.fastq:3207281
-12-2B_R2_cleaned.fastq:3207281
-12-7A_R1_cleaned.fastq:3449700
-12-7A_R2_cleaned.fastq:3449700
-13-10A_R1_cleaned.fastq:3199817
-13-10A_R2_cleaned.fastq:3199817
-13-13A_R1_cleaned.fastq:4078850
-13-13A_R2_cleaned.fastq:4078850
-13-9A_R1_cleaned.fastq:3813784
-13-9A_R2_cleaned.fastq:3813784
-14-11A_R1_cleaned.fastq:7580651
-14-11A_R2_cleaned.fastq:7580651
-14-12A_R1_cleaned.fastq:4027340
-14-12A_R2_cleaned.fastq:4027340
-14-8A_R1_cleaned.fastq:3505685
-14-8A_R2_cleaned.fastq:3505685
-15-3A_R1_cleaned.fastq:3534235
-15-3A_R2_cleaned.fastq:3534235
-15-6A_R1_cleaned.fastq:4689430
-15-6A_R2_cleaned.fastq:4689430
 
 # Run Fastqc on cleaned files
-```mkdir cleaned_QC_Files```
+```mkdir Cleaned_QC_Files```
 
 ```/home/hputnam/programs/FastQC/fastqc /home/hputnam/Pdam_Taiwan_2010/Adult/Data/Clean_Data/*fastq -o /home/hputnam/Pdam_Taiwan_2010/Adult/Data/cleaned_QC_Files```
 
@@ -635,18 +444,15 @@ https://github.com/ExpressionAnalysis/ea-utils
 
 
 # Concatenate all R1 and all R2
-```cat all_R1_clean.fastq  SRR1030692_1_cleaned.fastq SRR1030693_1_cleaned.fastq SRR1030694_1_cleaned.fastq  > all_R1_cleaned.fastq```
+```cat *_R1_cleaned.fastq > all_R1_cleaned.fastq```
 
-```cat all_R2_clean.fastq  SRR1030692_2_cleaned.fastq SRR1030693_2_cleaned.fastq SRR1030694_2_cleaned.fastq  > all_R2_cleaned.fastq```
+```cat *_R2_cleaned.fastq > all_R2_cleaned.fastq```
 
 # Count Reads
-```grep -c "@HW" /home/hputnam/Pdam_Taiwan_2010/Assembly_Data/Cleaned_Data/*cleaned.fastq```
+```zgrep -c "@HW" /home/hputnam/Pdam_Taiwan_2010/Assembly_Data/Cleaned_Data/*cleaned.fastq```
 
 
-
-```grep -c "@SRR" /home/hputnam/Pdam_Taiwan_2010/Assembly_Data/Cleaned_Data/*cleaned.fastq```
-
-
+```zgrep -c "@SRR" /home/hputnam/Pdam_Taiwan_2010/Assembly_Data/Cleaned_Data/*cleaned.fastq```
 
 
 # Run Trinity de novo assembly
