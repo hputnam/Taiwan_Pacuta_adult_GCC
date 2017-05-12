@@ -512,40 +512,39 @@ SRR1030694_R2_cleaned.fastq:19840799
 # Run Fastqc on cleaned files
 ```mkdir Cleaned_QC_Files```
 
-```~/programs/FastQC/fastqc ~/Pdam_Taiwan_2010/Assembly_Data/Cleaned_Data/SRR*.fastq -o /~/Pdam_Taiwan_2010/Assembly_Data/Cleaned_QC_Files```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```~/programs/FastQC/fastqc ~/Pdam_Taiwan_2010/Assembly_Data/Cleaned_Data/*.fastq -o ~/Pdam_Taiwan_2010/Assembly_Data/Cleaned_QC_Files```
 
 # Examine FASTQC Results of cleaned files
-```scp -r hputnam@galaxy.geodata.hawaii.edu:~/Pdam_Taiwan_2010/Adult/Data/Cleaned_QC_Files ~/MyProjects/Taiwan_Pacuta_adult_GCC/BioInf```
+```scp -r hputnam@galaxy.geodata.hawaii.edu:~/Pdam_Taiwan_2010/Assembly_Data/Cleaned_QC_Files ~/MyProjects/Taiwan_Pacuta_adult_GCC/BioInf```
 
 ```~/MultiQC/scripts/multiqc .```
 
 # Concatenate all R1 and all R2
-```cat *_R1_cleaned.fastq > all_R1_cleaned.fastq```
+```cat *R1_75_cleaned.fastq > all_R1_cleaned.fastq```
 
-```cat *_R2_cleaned.fastq > all_R2_cleaned.fastq```
+```cat *R2_75_cleaned.fastq > all_R2_cleaned.fastq```
 
 # Count Reads
 ```zgrep -c "@HWUSI" all_R*_cleaned.fastq```
 
+* all_R1_cleaned.fastq:73080641
+* all_R2_cleaned.fastq:73080641
+
 ```zgrep -c "@SRR" all_R*_cleaned.fastq```
+
+* all_R1_cleaned.fastq:112905045
+* all_R2_cleaned.fastq:112905045
+
+
+
+
+
+
+
 
 
 # Run Trinity de novo assembly
-```~/programs/trinityrnaseq-2.2.0/Trinity --seqType fq  --left ~/Pdam_Taiwan_2010/Adult/Data/Clean_Data/all_R1_clean.fastq --right ~/Pdam_Taiwan_2010/Adult/Data/Clean_Data/all_R2_clean.fastq --CPU 40 --max_memory 20G  --min_contig_length 200``` 
+```~/programs/trinityrnaseq-2.2.0/Trinity --seqType fq  --left ~/Pdam_Taiwan_2010/Adult/Data/Cleaned_Data/all_R1_clean.fastq --right ~/Pdam_Taiwan_2010/Adult/Data/Cleaned_Data/all_R2_clean.fastq --CPU 40 --max_memory 400G  --min_contig_length 200``` 
 
 # Check Trinity Assembly Stats
 ```/usr/local/opt/trinityrnaseq/util/TrinityStats.pl ~/Pdam_Taiwan_2010/Adult/Trinity_Out/trinity_out_dir/Trinity.fasta > ~/Pdam_Taiwan_2010/Adult/Trinity_Out/trinity_out_dir/Trinity.Summary.txt```
