@@ -156,26 +156,53 @@ Data uploaded and analyzed on Poire
 ### add Mayfield 12 Adult P acuta libraries
 https://www.ncbi.nlm.nih.gov//sra/?term=SRP033085
 
-Run	|# of Spots|	# of Bases |	Size	|Published
------|-----|-----|-----|-----|
-SRR1030692	|46,662,042|	9.4G	|5.8Gb	|2013-12-03
-SRR1030693	|45,975,388	|9.3G	|5.5Gb	|2013-12-03
-SRR1030694	|41,725,663	|8.4G	|5Gb	|2013-12-03
+```wget http://symbiont.iis.sinica.edu.tw/coral_pdltte/static/doc/data/C2T1S2_r1.fastq.gz```
 
-```~/programs/sratoolkit.2.8.2-1-ubuntu64/bin/fastq-dump -I --split-files SRR1030692 --gzip```
+```wget http://symbiont.iis.sinica.edu.tw/coral_pdltte/static/doc/data/C2T1S2_r2.fastq.gz```
 
-```~/programs/sratoolkit.2.8.2-1-ubuntu64/bin/fastq-dump -I --split-files SRR1030693 --gzip```
+```wget http://symbiont.iis.sinica.edu.tw/coral_pdltte/static/doc/data/C2T2S2_r1.fastq.gz```
 
-```~/programs/sratoolkit.2.8.2-1-ubuntu64/bin/fastq-dump -I --split-files SRR1030694 --gzip```
+```wget http://symbiont.iis.sinica.edu.tw/coral_pdltte/static/doc/data/C2T2S2_r2.fastq.gz``` 
 
-```zgrep -c "@SRR" *.fastq.gz```
+```wget http://symbiont.iis.sinica.edu.tw/coral_pdltte/static/doc/data/C2T3S1_r1.fastq.gz``` 
 
-* SRR1030692_1.fastq.gz:46662042
-* SRR1030692_2.fastq.gz:46662042
-* SRR1030693_1.fastq.gz:45975388
-* SRR1030693_2.fastq.gz:45975388
-* SRR1030694_1.fastq.gz:41725663
-* SRR1030694_2.fastq.gz:41725663
+```wget http://symbiont.iis.sinica.edu.tw/coral_pdltte/static/doc/data/C2T3S1_r2.fastq.gz``` 
+
+```wget http://symbiont.iis.sinica.edu.tw/coral_pdltte/static/doc/data/C36T1S1_r1.fastq.gz``` 
+
+```wget http://symbiont.iis.sinica.edu.tw/coral_pdltte/static/doc/data/C36T1S1_r2.fastq.gz``` 
+
+```wget http://symbiont.iis.sinica.edu.tw/coral_pdltte/static/doc/data/C36T2S1_r1.fastq.gz``` 
+
+```wget http://symbiont.iis.sinica.edu.tw/coral_pdltte/static/doc/data/C36T2S1_r2.fastq.gz``` 
+
+```wget http://symbiont.iis.sinica.edu.tw/coral_pdltte/static/doc/data/C36T3S1_r1.fastq.gz``` 
+
+```wget http://symbiont.iis.sinica.edu.tw/coral_pdltte/static/doc/data/C36T3S1_r2.fastq.gz``` 
+
+```wget http://symbiont.iis.sinica.edu.tw/coral_pdltte/static/doc/data/H2T1S2_r1.fastq.gz```
+
+```wget http://symbiont.iis.sinica.edu.tw/coral_pdltte/static/doc/data/H2T1S2_r2.fastq.gz```
+
+```wget http://symbiont.iis.sinica.edu.tw/coral_pdltte/static/doc/data/H2T2S1_r1.fastq.gz```
+
+```wget http://symbiont.iis.sinica.edu.tw/coral_pdltte/static/doc/data/H2T2S1_r2.fastq.gz```
+
+```wget http://symbiont.iis.sinica.edu.tw/coral_pdltte/static/doc/data/H2T3S2_r1.fastq.gz```
+
+```wget http://symbiont.iis.sinica.edu.tw/coral_pdltte/static/doc/data/H2T3S2_r2.fastq.gz```
+
+```wget http://symbiont.iis.sinica.edu.tw/coral_pdltte/static/doc/data/H36T1S1_r1.fastq.gz```
+
+```wget http://symbiont.iis.sinica.edu.tw/coral_pdltte/static/doc/data/H36T1S1_r2.fastq.gz```
+
+```wget http://symbiont.iis.sinica.edu.tw/coral_pdltte/static/doc/data/H36T2S1_r1.fastq.gz```
+
+```wget http://symbiont.iis.sinica.edu.tw/coral_pdltte/static/doc/data/H36T2S1_r2.fastq.gz```
+
+```wget http://symbiont.iis.sinica.edu.tw/coral_pdltte/static/doc/data/H36T3S1_r1.fastq.gz```
+
+```wget http://symbiont.iis.sinica.edu.tw/coral_pdltte/static/doc/data/H36T3S1_r2.fastq.gz```
 
 
 # Adapter File
@@ -281,8 +308,6 @@ GATCGGAAGAGCACACGTCTGAACTCCAGTCAATTCCTAATCTCGTATGCCGTCTTCTGCTTG
 ## Compare number of sequences between original and concatenated files
 ```zgrep -c "@HWUSI" *.fastq.gz```
 
-```zgrep -c "@SRR" SRR*.fastq.gz```
-
 * 10--17_AGTCAA_L002_R1_001.fastq.gz:4000000
 * 10--17_AGTCAA_L002_R1_002.fastq.gz:2567688
 * 10--17_AGTCAA_L002_R2_001.fastq.gz:4000000
@@ -379,15 +404,34 @@ GATCGGAAGAGCACACGTCTGAACTCCAGTCAATTCCTAATCTCGTATGCCGTCTTCTGCTTG
 * 15-6A_CTTGTA_L005_R2_002.fastq.gz:757944
 * 15-6_R1.fastq.gz:4757944
 * 15-6_R2.fastq.gz:4757944
-* SRR1030692_1.fastq.gz:46662042
-* SRR1030692_2.fastq.gz:46662042
-* SRR1030693_1.fastq.gz:45975388
-* SRR1030693_2.fastq.gz:45975388
-* SRR1030694_1.fastq.gz:41725663
-* SRR1030694_2.fastq.gz:41725663
 
-* 444,128,288 Raw reads for assembly
-* 91,960,776 Raw reads for temp and pH analysis
+* C2T1S2_r1.fastq.gz:4404647
+* C2T1S2_r2.fastq.gz:4404647
+* C2T2S2_r1.fastq.gz:2786443
+* C2T2S2_r2.fastq.gz:2786443
+* C2T3S1_r1.fastq.gz:4380357
+* C2T3S1_r2.fastq.gz:4380357
+* C36T1S1_r1.fastq.gz:3667021
+* C36T1S1_r2.fastq.gz:3667021
+* C36T2S1_r1.fastq.gz:6186073
+* C36T2S1_r2.fastq.gz:6186073
+* C36T3S1_r1.fastq.gz:4670898
+* C36T3S1_r2.fastq.gz:4670898
+* H2T1S2_r1.fastq.gz:3201370
+* H2T1S2_r2.fastq.gz:3201370
+* H2T2S1_r1.fastq.gz:3480910
+* H2T2S1_r2.fastq.gz:3480910
+* H2T3S2_r1.fastq.gz:3118683
+* H2T3S2_r2.fastq.gz:3118683
+* H36T1S1_r1.fastq.gz:3488972
+* H36T1S1_r2.fastq.gz:3488972
+* H36T2S1_r1.fastq.gz:3501343
+* H36T2S1_r2.fastq.gz:3501343
+* H36T3S1_r1.fastq.gz:3775325
+* H36T3S1_r2.fastq.gz:3775325
+
+* 268,726,186 Raw reads for assembly
+* 91,950,776 Raw reads for temp and pH analysis
 
 
 ## Check quality of Raw datafiles
@@ -395,10 +439,12 @@ GATCGGAAGAGCACACGTCTGAACTCCAGTCAATTCCTAATCTCGTATGCCGTCTTCTGCTTG
 
 ```mkdir ~/Pdam_Taiwan_2010/Assembly_Data/Raw_QC_Files```
 
-```~/programs/FastQC/fastqc ~/Pdam_Taiwan_2010/Assembly_Data/RawData/*_R*.fastq.gz -o /~/Pdam_Taiwan_2010/Assembly_Data/Raw_QC_Files```
+```~/programs/FastQC/fastqc ~/Pdam_Taiwan_2010/Assembly_Data/RawData/*_R*.fastq.gz -o ~/Pdam_Taiwan_2010/Assembly_Data/Raw_QC_Files```
+
+```~/programs/FastQC/fastqc ~/Pdam_Taiwan_2010/Assembly_Data/RawData/*_r*.fastq.gz -o ~/Pdam_Taiwan_2010/Assembly_Data/Raw_QC_Files```
 
 ## Examine FASTQC Results of raw files
-```scp -r hputnam@galaxy.geodata.hawaii.edu:~/Pdam_Taiwan_2010/Assembly_Data/Raw_QC_Files/SRR* ~/MyProjects/Taiwan_Pacuta_adult_GCC/BioInf/Raw_QC_Files```
+```scp -r hputnam@galaxy.geodata.hawaii.edu:~/Pdam_Taiwan_2010/Assembly_Data/Raw_QC_Files ~/MyProjects/Taiwan_Pacuta_adult_GCC/BioInf/Raw_QC_Files```
 
 
 ## Run multicq from raw qc folder to combine results from all files
@@ -407,19 +453,19 @@ http://multiqc.info/
 ```~/MultiQC/scripts/multiqc .```
 
 * 13-16_R1 failed and only has 161 sequences. This library will not be used in further analyses
-* 14-11 has ~6million sequences, 2x more than any other library in this set
+* 14-11 has ~ 2x more than any other library in this set of temp and pH conditions
 
 ## Clean files
 
 ### Mayfield Data
 ```mkdir ~/Pdam_Taiwan_2010/Assembly_Data/Cleaned_Data```
 
-```nohup sh -c 'for file in "SRR1030692"  "SRR1030693"  "SRR1030694"
+```nohup sh -c 'for file in "C2T1S2" "C2T2S2" "C2T3S1" "C36T1S1" "C36T2S1" "C36T3S1" "H2T1S2" "H2T2S1" "H2T3S2" "H36T1S1" "H36T2S1" "H36T3S1"
 do
 ~/programs/ea-utils.1.1.2-806/fastq-mcf \
 ~/Mcap_Spawn/Refs/barcodes.fa \
-~/Pdam_Taiwan_2010/Assembly_Data/RawData/${file}_1.fastq.gz \
-~/Pdam_Taiwan_2010/Assembly_Data/RawData/${file}_2.fastq.gz \
+~/Pdam_Taiwan_2010/Assembly_Data/RawData/${file}_r1.fastq.gz \
+~/Pdam_Taiwan_2010/Assembly_Data/RawData/${file}_r2.fastq.gz \
 -l 75 \
 -q 20 \
 -w 5 \
@@ -452,28 +498,15 @@ done'```
 ## Check quality of Cleaned datafiles
 * fastqc
 
-```~/programs/FastQC/fastqc *75_cleaned.fastq -o ~/Pdam_Taiwan_2010/Assembly_Data/Cleaned_QC_Files```
+```~/programs/FastQC/fastqc H*_cleaned.fastq -o ~/Pdam_Taiwan_2010/Assembly_Data/Cleaned_QC_Files```
 
-```scp -r hputnam@galaxy.geodata.hawaii.edu:~/Pdam_Taiwan_2010/Assembly_Data/Cleaned_QC_Files/*75_cleaned_fastqc.* ~/MyProjects/Taiwan_Pacuta_adult_GCC/BioInf/Cleaned_QC_Files/Cleaned_75```
+```scp -r hputnam@galaxy.geodata.hawaii.edu:~/Pdam_Taiwan_2010/Assembly_Data/Cleaned_QC_Files ~/MyProjects/Taiwan_Pacuta_adult_GCC/BioInf/Cleaned_QC_Files```
 
 ```~/MultiQC/scripts/multiqc .```
 
 # Count Cleaned Reads
-```zgrep -c "@HWUSI" *-*.fastq```
-```zgrep -c "@SRR" SRR*.fastq```
 
-### Length 100 -l     Minimum remaining sequence length
-
-SRR1030692_R1_cleaned.fastq:29720446
-SRR1030692_R2_cleaned.fastq:29720446
-SRR1030693_R1_cleaned.fastq:31388115
-SRR1030693_R2_cleaned.fastq:31388115
-SRR1030694_R1_cleaned.fastq:19840799
-SRR1030694_R2_cleaned.fastq:19840799
-
-### Length 75 -l     Minimum remaining sequence length
-```zgrep -c "@HWUSI" *-*75_cleaned.fastq```
-```zgrep -c "@SRR" SRR*75_cleaned.fastq```
+```zgrep -c "@HWUSI" *.fastq```
 10-17_R1_75_cleaned.fastq:5174362
 10-17_R2_75_cleaned.fastq:5174362
 10-18_R1_75_cleaned.fastq:4663935
@@ -508,6 +541,33 @@ SRR1030694_R2_cleaned.fastq:19840799
 15-3_R2_75_cleaned.fastq:3179055
 15-6_R1_75_cleaned.fastq:4216439
 15-6_R2_75_cleaned.fastq:4216439
+C2T1S2_R1_75_cleaned.fastq:3719641
+C2T1S2_R2_75_cleaned.fastq:3719641
+C2T2S2_R1_75_cleaned.fastq:2350371
+C2T2S2_R2_75_cleaned.fastq:2350371
+C2T3S1_R1_75_cleaned.fastq:3680082
+C2T3S1_R2_75_cleaned.fastq:3680082
+C36T1S1_R1_75_cleaned.fastq:3248717
+C36T1S1_R2_75_cleaned.fastq:3248717
+C36T2S1_R1_75_cleaned.fastq:5369965
+C36T2S1_R2_75_cleaned.fastq:5369965
+C36T3S1_R1_75_cleaned.fastq:4110206
+C36T3S1_R2_75_cleaned.fastq:4110206
+H2T1S2_R1_75_cleaned.fastq:2623652
+H2T1S2_R2_75_cleaned.fastq:2623652
+H2T2S1_R1_75_cleaned.fastq:2908491
+H2T2S1_R2_75_cleaned.fastq:2908491
+H2T3S2_R1_75_cleaned.fastq:2544796
+H2T3S2_R2_75_cleaned.fastq:2544796
+H36T1S1_R1_75_cleaned.fastq:3042798
+H36T1S1_R2_75_cleaned.fastq:3042798
+H36T2S1_R1_75_cleaned.fastq:3032935
+H36T2S1_R2_75_cleaned.fastq:3032935
+H36T3S1_R1_75_cleaned.fastq:3208417
+H36T3S1_R2_75_cleaned.fastq:3208417
+
+* 225,841,424 Clean reads for assembly
+* 80,446,504 Clean reads for temp and pH analysis
 
 # Run Fastqc on cleaned files
 ```mkdir Cleaned_QC_Files```
@@ -527,24 +587,25 @@ SRR1030694_R2_cleaned.fastq:19840799
 # Count Reads
 ```zgrep -c "@HWUSI" all_R*_cleaned.fastq```
 
-* all_R1_cleaned.fastq:73080641
-* all_R2_cleaned.fastq:73080641
-
-```zgrep -c "@SRR" all_R*_cleaned.fastq```
-
-* all_R1_cleaned.fastq:112905045
-* all_R2_cleaned.fastq:112905045
-
-
-
-
-
-
-
-
+* total reads R1: 112,920,712
+* total reads R2: 112,920,712
 
 # Run Trinity de novo assembly
-```~/programs/trinityrnaseq-2.2.0/Trinity --seqType fq  --left ~/Pdam_Taiwan_2010/Adult/Data/Cleaned_Data/all_R1_clean.fastq --right ~/Pdam_Taiwan_2010/Adult/Data/Cleaned_Data/all_R2_clean.fastq --CPU 40 --max_memory 400G  --min_contig_length 200``` 
+```mkdir Trinity_Output```
+
+* run trinity de novo assembly with read normalization (default on v2.4.0)
+
+```nohup ~/programs/trinityrnaseq-Trinity-v2.4.0/Trinity --seqType fq  --left ~/Pdam_Taiwan_2010/Assembly_Data/Cleaned_Data/all_R1_cleaned.fastq --right ~/Pdam_Taiwan_2010/Assembly_Data/Cleaned_Data/all_R2_cleaned.fastq --CPU 40 --max_memory 400G  --min_contig_length 200```
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
 
 # Check Trinity Assembly Stats
 ```/usr/local/opt/trinityrnaseq/util/TrinityStats.pl ~/Pdam_Taiwan_2010/Adult/Trinity_Out/trinity_out_dir/Trinity.fasta > ~/Pdam_Taiwan_2010/Adult/Trinity_Out/trinity_out_dir/Trinity.Summary.txt```
@@ -587,3 +648,32 @@ SRR1030694_R2_cleaned.fastq:19840799
 # Split into Host and Symbiodinium contigs
 
 # Repeat DEG
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+* deal with duplication of header information from SRA format
+
+sed 's/SRR103069*.*.* HWUSI/HWUSI/' all_R1_cleaned.fastq | sed 's/^+.*/+/' > fixed_all_R1_cleaned.fastq
+
+sed 's/SRR103069*.*.* HWUSI/HWUSI/' all_R2_cleaned.fastq | sed 's/^+.*/+/' > fixed_all_R2_cleaned.fastq
+
+* now ```zgrep -c "@SRR" fixed_all_R*_cleaned.fastq``` should = 0
+* now ```zgrep -c "+SRR" fixed_all_R*_cleaned.fastq``` should = 0
+
+* now ```zgrep -c "@HWUSI" fixed_all_R*_cleaned.fastq``` should equal total above
+
+* fixed_all_R1_cleaned.fastq:185,985,686
+* fixed_all_R2_cleaned.fastq:185985686
