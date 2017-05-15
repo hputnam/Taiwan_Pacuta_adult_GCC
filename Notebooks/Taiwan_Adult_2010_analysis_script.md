@@ -597,45 +597,109 @@ H36T3S1_R2_75_cleaned.fastq:3208417
 
 ```nohup ~/programs/trinityrnaseq-Trinity-v2.4.0/Trinity --seqType fq  --left ~/Pdam_Taiwan_2010/Assembly_Data/Cleaned_Data/all_R1_cleaned.fastq --right ~/Pdam_Taiwan_2010/Assembly_Data/Cleaned_Data/all_R2_cleaned.fastq --CPU 40 --max_memory 400G  --min_contig_length 200```
 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
 # Check Trinity Assembly Stats
-```/usr/local/opt/trinityrnaseq/util/TrinityStats.pl ~/Pdam_Taiwan_2010/Adult/Trinity_Out/trinity_out_dir/Trinity.fasta > ~/Pdam_Taiwan_2010/Adult/Trinity_Out/trinity_out_dir/Trinity.Summary.txt```
+```/usr/local/opt/trinityrnaseq/util/TrinityStats.pl ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta > Trinity.Summary.txt```
 
-# Run BSUSCO on Trinity.fasta 
+## Counts of transcripts, etc.
+
+* Total trinity 'genes':  195054
+* Total trinity transcripts:      386809
+* Percent GC: 42.90
+
+## Stats based on ALL transcript contigs:
+
+        Contig N10: 5532
+        Contig N20: 4068
+        Contig N30: 3150
+        Contig N40: 2481
+        Contig N50: 1961
+
+        Median contig length: 578
+        Average contig: 1088.91
+        Total assembled bases: 421198256
+
+## Stats based on ONLY LONGEST ISOFORM per 'GENE':
+
+
+        Contig N10: 5223
+        Contig N20: 3591
+        Contig N30: 2640
+        Contig N40: 2013
+        Contig N50: 1545
+
+        Median contig length: 429
+        Average contig: 857.73
+        Total assembled bases: 167303729
+
+
+
+#Run BSUSCO on Trinity.fasta 
 * http://busco.ezlab.org/files/BUSCO_userguide.pdf
 
 ## Assessing assembly and annotation completeness with Benchmarking Universal Single-Copy Orthologs
+```mkdir BUSCO```
+```mkdir BUSCO/alv```
 
-```python ~/programs/BUSCO_v1.22/BUSCO_v1.22.py -o Pdam_Adult_BUSCO -in ~/Pdam_Taiwan_2010/Adult/Trinity_Out/trinity_out_dir/Trinity.fasta -l ~/programs/BUSCO_v1.22/eukaryota -m trans```
+```python ~/programs/BUSCO_v1.22/BUSCO_v1.22.py -o Pdam_alv -in ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta -l /home/hputnam/Mcap_Spawn/Refs/alveolata_stramenophiles_ensembl -m trans```
 
-# Assessing the Read Content of the Transcriptome Assembly
+        0       Complete BUSCOs
+        0       Complete and single-copy BUSCOs
+        0       Complete and duplicated BUSCOs
+        0       Fragmented BUSCOs
+        234     Missing BUSCOs
+        234     Total BUSCO groups searched
 
-```bowtie2-build ~/Pdam_Taiwan_2010/Adult/Trinity_Out/trinity_out_dir/Trinity.fasta ~/Pdam_Taiwan_2010/Adult/Trinity_Out/trinity_out_dir/Trinity.fasta```
 
-```bowtie2 -p20 --local --no-unal -x /home/hputnam/Mcap_Spawn/trinity_out_dir/Trinity.fasta -q -1 /home/hputnam/Mcap_Spawn/Data/cleaned/all_R1_clean.fastq -2 /home/hputnam/Mcap_Spawn/Data/cleaned/all_R2_clean.fastq | samtools view -Sb - | samtools sort -no - - > bowtie2.nameSorted.bam```
+```mkdir BUSCO/euk```
 
+```python ~/programs/BUSCO_v1.22/BUSCO_v1.22.py -o Pdam_euk -in ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta -l /home/hputnam/Mcap_Spawn/Refs/eukaryota_odb9 -m trans```
+
+        291     Complete BUSCOs
+        150     Complete and single-copy BUSCOs
+        141     Complete and duplicated BUSCOs
+        10      Fragmented BUSCOs
+        2       Missing BUSCOs
+        303     Total BUSCO groups searched
+
+```mkdir BUSCO/meta```
+
+```python ~/programs/BUSCO_v1.22/BUSCO_v1.22.py -o Pdam_meta -in ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta -l /home/hputnam/Mcap_Spawn/Refs/metazoa_odb9 -m trans```
+        
+        915     Complete BUSCOs
+        508     Complete and single-copy BUSCOs
+        407     Complete and duplicated BUSCOs
+        47      Fragmented BUSCOs
+        16      Missing BUSCOs
+        978     Total BUSCO groups searched
 
 # Estimating Transcript Abundance with RSEM in Trinity
- 
-```/usr/local/opt/trinityrnaseq/util/align_and_estimate_abundance.pl --transcripts /home/hputnam/Mcap_Spawn/trinity_out_dir/Trinity.fasta --seqType fq --left /home/hputnam/Pdam_Taiwan_2010/Adult/Data/Clean_Data/12-14A_R1_cleaned.fastq --right /home/hputnam/Pdam_Taiwan_2010/Adult/Data/Clean_Data/12-14A_R2_cleaned.fastq  --est_method RSEM  --trinity_mode --output_prefix 12-14A```
+```mkdir ~/Pdam_Taiwan_2010/RSEM```
+
+```nohup sh -c 'for file in "12-14" "12-2" "12-7" "13-10" "13-13" "13-9" "14-11" "14-12" "14-8" "15-3" "15-6"
+do
+/home/hputnam/programs/trinityrnaseq-Trinity-v2.4.0/util/align_and_estimate_abundance.pl \
+--transcripts ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta \
+--seqType fq \
+--prep_reference \
+--left ~/Pdam_Taiwan_2010/Assembly_Data/Cleaned_Data/${file}_R1_75_cleaned.fastq \
+--right ~/Pdam_Taiwan_2010/Assembly_Data/Cleaned_Data/${file}_R2_75_cleaned.fastq  \
+--est_method RSEM \
+--aln_method bowtie2 \
+--trinity_mode \
+--output_dir ~/Pdam_Taiwan_2010/RSEM \
+--output_prefix ${file}
+done'```
 
 
 # Build Transcript and Gene Expression Matrices
 
-/usr/local/opt/trinityrnaseq/util/abundance_estimates_to_matrix.pl --est_method RSEM --out_prefix isoforms_counts_matrix T4-1.isoforms.results T4-6.isoforms.results T4-8.isoforms.results T5-1.isoforms.results T5-6.isoforms.results T5-8.isoforms.results T7-1.isoforms.results T7-6.isoforms.results T7-8.isoforms.results
+```/usr/local/opt/trinityrnaseq/util/abundance_estimates_to_matrix.pl --est_method RSEM --out_prefix isoforms_counts_matrix 12-14.isoforms.results 12-2.isoforms.results 12-7.isoforms.results 13-10.isoforms.results 13-13.isoforms.results 13-9.isoforms.results 14-11.isoforms.results 14-12.isoforms.results 14-8.isoforms.results 15-3.isoforms.results 15-6.isoforms.results```
+
+scp hputnam@galaxy.geodata.hawaii.edu:~/Pdam_Taiwan_2010/RSEM/isoforms_counts_matrix.counts.matrix /Users/hputnam/MyProjects/Taiwan_Pacuta_adult_GCC/RAnalysis/Data/
 
 # Run Differential Expression Analysis
 
-/usr/local/opt/trinityrnaseq/Analysis/DifferentialExpression/run_DE_analysis.pl --matrix /home/hputnam/Mcap_Spawn/RSEM/isoforms_counts_matrix.counts.matrix --method edgeR --samples_file /home/hputnam/Mcap_Spawn/Refs/sample_description.txt 
+/usr/local/opt/trinityrnaseq/Analysis/DifferentialExpression/run_DE_analysis.pl --matrix ~/Pdam_Taiwan_2010/isoforms_counts_matrix.counts.matrix --method edgeR --samples_file /home/hputnam/Mcap_Spawn/Refs/sample_description.txt 
 
 # Cluster DEG_fpkm
 /usr/local/opt/trinityrnaseq/Analysis/DifferentialExpression/analyze_diff_expr.pl --matrix /home/hputnam/Mcap_Spawn/RSEM/isoforms_counts_matrix.TMM.fpkm.matrix -P 0.05 -C 0 --samples /home/hputnam/Mcap_Spawn/Refs/sample_description.txt 
@@ -657,6 +721,141 @@ H36T3S1_R2_75_cleaned.fastq:3208417
 
 
 
+# Annotation with Trinotate
+
+#### BLASTx
+
+```nohup ~/programs/ncbi-blast-2.6.0+/bin/blastx -query ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta -db ~/programs/Trinotate-3.0.1/uniprot_sprot.pep -num_threads 30 -max_target_seqs 1 -outfmt 6 > blastx.outfmt6```
+
+#### TransDecoder
+
+```mkdir Transdecoder```
+
+```nohup /home/hputnam/programs/TransDecoder-3.0.1/TransDecoder.LongOrfs -t ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta```
+
+```nohup ~/programs/TransDecoder-3.0.1/TransDecoder.Predict --cpu 30 -t ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta```
+
+#### BLASTp
+
+```nohup ~/programs/ncbi-blast-2.6.0+/bin/blastp -query ~/Pdam_Taiwan_2010/Annot/Transdecoder/Trinity.fasta.transdecoder.pep -db ~/programs/Trinotate-3.0.1/uniprot_sprot.pep -num_threads 30 -max_target_seqs 1 -outfmt 6 > blastp.outfmt6
+
+#### HMMER
+
+```nohup ~/programs/hmmer-3.1b2-linux-intel-x86_64/binaries/hmmscan --cpu 30 --domtblout TrinotatePFAM.out ~/programs/Trinotate-3.0.1/Pfam-A.hmm ~/Pdam_Taiwan_2010/Annot/Transdecoder/Trinity.fasta.transdecoder.pep > pfam.log
+
+#### signalP
+
+```nohup ~/programs/signalp-4.1/signalp -f short -n signalp.out ~/Pdam_Taiwan_2010/Annot/Transdecoder/Trinity.fasta.transdecoder.pep
+
+#### tmHMM
+
+```nohup ~/programs/tmhmm-2.0c/bin/tmhmm --short < ~/Pdam_Taiwan_2010/Annot/Transdecoder/Trinity.fasta.transdecoder.pep > tmhmm.out
+
+#### RNAMMER
+
+```nohup ~/programs/Trinotate-3.0.1/util/rnammer_support/RnammerTranscriptome.pl --transcriptome ~/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta --path_to_rnammer ~/programs/rnammer
+
+# Build Trinotate SQLite Database
+
+```~/programs/trinityrnaseq-Trinity-v2.4.0/util/support_scripts/get_Trinity_gene_to_trans_map.pl ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta >  Trinity.fasta.gene_trans_map
+
+#### Load transcripts and coding regions
+
+```~/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite init --gene_trans_map ~/Pdam_Taiwan_2010/Annot/SQL_DB/Trinity.fasta.gene_trans_map --transcript_fasta ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta --transdecoder_pep ~/Pdam_Taiwan_2010/Annot/Transdecoder/Trinity.fasta.transdecoder.pep
+
+#### Load BLAST homologies
+
+```~/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_swissprot_blastp ~/Pdam_Taiwan_2010/Annot/pep/blastp.outfmt6
+
+```/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_swissprot_blastx ~/Pdam_Taiwan_2010/Annot/blastx.outfmt6
+
+#### Load PFAM 
+
+```/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_pfam ~/Pdam_Taiwan_2010/Annot/HMM/TrinotatePFAM.out
+
+
+#### Load transmembrane domains
+
+```/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_tmhmm ~/Pdam_Taiwan_2010/Annot/tmHH/tmhmm.out
+
+#### Load signal peptide predictions
+
+```/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_signalp ~/Pdam_Taiwan_2010/Annot/SP/signalp.out
+
+#### Output Annotation Report
+
+```/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite report > trinotate_annotation_report.xls
+
+```scp hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/Annot/SQL_DB/trinotate_annotation_report.xls /Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Data
+
+
+#### InterProScan
+
+* https://github.com/ebi-pf-team/interproscan
+* interproscan-5.23-62.0
+* panther-data-11.1
+
+* ftp://ftp.ebi.ac.uk/pub/software/unix/iprscan/5/5.24-63.0/interproscan-5.24-63.0-64-bit.tar.gz
+
+
+input file 
+* /home/hputnam/Mcap_Spawn/Annot/TransDecoder/Trinity.fasta.transdecoder.pep
+
+```mkdir IPS```
+
+##### run a test of IPS on IPS test data in installation file
+
+```~/programs/my_interproscan/interproscan-5.23-62.0/interproscan.sh -i ~/programs/my_interproscan/interproscan-5.23-62.0/test_proteins.fasta -f tsv```
+
+* test was successful except new version of IPS is available
+* The version of InterProScan you are using is 5.23-62.0
+* The version of the lookup service you are using is 5.24-63.0
+* As the data in these versions is not the same, you cannot use this match lookup service.
+
+### Prepare data for input to IPS
+
+##### Prepare input file by Removing astrix
+```sed 's_*__g' /home/hputnam/Mcap_Spawn/Annot/TransDecoder/Trinity.fasta.transdecoder.pep > ISP.input.predicted.pep```
+
+##### run a test of IPS on our data 
+
+```nano Mcap_test.pep```
+
+```~/programs/my_interproscan/interproscan-5.23-62.0/interproscan.sh -i Mcap_test.pep -f tsv```
+
+The version of InterProScan you are using is 5.23-62.0
+The version of the lookup service you are using is 5.24-63.0
+As the data in these versions is not the same, you cannot use this match lookup service.
+InterProScan will now run locally
+If you would like to use the match lookup service, you have the following options:
+i) Download the newest version of InterProScan5 from our FTP site by following the instructions on:
+   https://www.ebi.ac.uk/interpro/interproscan.html
+ii) Download the match lookup service for your version of InterProScan from our FTP site and install it locally.
+    You will then need to edit the following property in your configuration file to point to your local installation:
+    precalculated.match.lookup.service.url=
+
+In the meantime, the analysis will continue to run locally
+
+* addressed this with -dp disable precalculation
+
+##### Reset the number of processors used
+
+```nano ~/programs/my_interproscan/interproscan-5.23-62.0/interproscan.properties```
+
+* reset to: 
+* number.of.embedded.workers=19
+* maxnumber.of.embedded.workers=20
+
+##### Run IPS
+
+```nohup ~/programs/my_interproscan/interproscan-5.23-62.0/interproscan.sh \
+-d ~/Mcap_Spawn/Annot/IPS \
+-dp \
+-i ISP.input.predicted.pep \
+-f tsv```
+
+
+# Integrate Trinotate with IPS
 
 
 
@@ -664,16 +863,27 @@ H36T3S1_R2_75_cleaned.fastq:3208417
 
 
 
-* deal with duplication of header information from SRA format
 
-sed 's/SRR103069*.*.* HWUSI/HWUSI/' all_R1_cleaned.fastq | sed 's/^+.*/+/' > fixed_all_R1_cleaned.fastq
 
-sed 's/SRR103069*.*.* HWUSI/HWUSI/' all_R2_cleaned.fastq | sed 's/^+.*/+/' > fixed_all_R2_cleaned.fastq
 
-* now ```zgrep -c "@SRR" fixed_all_R*_cleaned.fastq``` should = 0
-* now ```zgrep -c "+SRR" fixed_all_R*_cleaned.fastq``` should = 0
 
-* now ```zgrep -c "@HWUSI" fixed_all_R*_cleaned.fastq``` should equal total above
+##### Software carpentry SQL query Programming from databases R
+* https://swcarpentry.github.io/sql-novice-survey/11-prog-R/
+* Load as database
+* joins
+* tidying
+### joins in R
 
-* fixed_all_R1_cleaned.fastq:185,985,686
-* fixed_all_R2_cleaned.fastq:185985686
+
+
+
+
+
+
+
+
+
+
+
+
+

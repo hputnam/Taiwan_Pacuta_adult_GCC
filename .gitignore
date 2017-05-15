@@ -2,3 +2,5 @@
 .Rhistory
 .RData
 .Ruserdata
+RAnalysis/Data/isoforms_counts_matrix.counts.matrix
+isoforms_counts_matrix.counts.matrix
