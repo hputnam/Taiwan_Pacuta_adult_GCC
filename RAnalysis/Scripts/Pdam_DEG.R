@@ -27,12 +27,11 @@ counts <- read.csv(file="isoforms_counts_matrix.counts.matrix", header=T, sep=""
 
 #want to pull up until the 3rd occurrance of ^ in Pfam column
 
-filt <- filterfun(pOverA(0.25,5)) #set filter values for PoverA, P percent of the samples have counts over A
+filt <- filterfun(pOverA(0.50,5)) #set filter values for PoverA, P percent of the samples have counts over A
 tfil <- genefilter(counts, filt) #create filter for the counts data
 keep <- counts[tfil,] #identify transcripts to keep by count filter
 gn.keep <- rownames(keep) #identify transcript list
 counts.10x <- as.matrix(counts[which(rownames(counts) %in% gn.keep),]) #data filtered in PoverA, P percent of the samples have counts over A
-#colnames(counts.10x) <- c("pd_12.14", "pd_12.2", "pd_12.7", "pd_13.10", "pd_13.13", "pd_13.9", "pd_14.11", "pd_14.12", "pd_14.8", "pd_15.3", "pd_15.6")
 storage.mode(counts.10x) = "integer" #store counts data as integer
 sample.info <- read.csv(file="sample_description.csv", header=T, sep=",", row.names=1) #load sample info
 sample.info$group <- factor(paste0(sample.info$Temperature, sample.info$CO2)) #merge condition and time into group
@@ -63,6 +62,8 @@ sig <- subset(DEG.int.res, padj<0.1,) #identify signficant pvalues with 10%FDR
 sig.list <- data[which(rownames(data) %in% rownames(sig)),] #subset list of sig transcripts from original count data
 rsig <- rlog(sig.list, blind=FALSE) #apply a regularized log transformation to minimize effects of small counts and normalize wrt library size
 
+write.csv(counts(sig.list), file="/Users/hputnam/MyProjects/Taiwan_Pacuta_adult_GCC/RAnalysis/Output/DEG.csv")
+
 ##### Run PCA
 #princomp(rsig$)
 
@@ -83,9 +84,10 @@ dev.off()
 topVarGenes <- head(order(rowVars(assay(rsig)),decreasing=TRUE),sig.num) #can choose a subset of transcripts for viewing
 mat <- assay(rsig)[ topVarGenes, ] #make an expression object
 mat <- mat - rowMeans(mat) #difference in expression compared to average across all samples
-df <- as.data.frame(colData(rsig)[,c("Temperature","CO2")]) #make dataframe
-jpeg(file="/Users/hputnam/MyProjects/Taiwan_Pacuta_adult_GCC/RAnalysis/Output/Heatmap.DEG.jpg")
-pheatmap(mat, annotation_col=df, 
+df <- as.data.frame(colData(rsig)[,c("CO2","Temperature")]) #make dataframe
+ann_colors <- list(Temperature = c(Ambient="blue", High="red"), CO2 = c(Ambient= "gray", High= "black")) #manually set colors
+jpeg(file="/Users/hputnam/MyProjects/Taiwan_Pacuta_adult_GCC/RAnalysis/Output/Heatmap.DEG.jpg") #save file
+pheatmap(mat, annotation_col=df, annotation_colors=ann_colors,
          show_rownames =F, 
          show_colnames =F) #plot heatmap of all DEG by group
 dev.off()
