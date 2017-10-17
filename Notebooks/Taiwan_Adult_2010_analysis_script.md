@@ -569,15 +569,6 @@ H36T3S1_R2_75_cleaned.fastq:3208417
 * 225,841,424 Clean reads for assembly
 * 80,446,504 Clean reads for temp and pH analysis
 
-# Run Fastqc on cleaned files
-```mkdir Cleaned_QC_Files```
-
-```~/programs/FastQC/fastqc ~/Pdam_Taiwan_2010/Assembly_Data/Cleaned_Data/*.fastq -o ~/Pdam_Taiwan_2010/Assembly_Data/Cleaned_QC_Files```
-
-# Examine FASTQC Results of cleaned files
-```scp -r hputnam@galaxy.geodata.hawaii.edu:~/Pdam_Taiwan_2010/Assembly_Data/Cleaned_QC_Files ~/MyProjects/Taiwan_Pacuta_adult_GCC/BioInf```
-
-```~/MultiQC/scripts/multiqc .```
 
 # Concatenate all R1 and all R2
 ```cat *R1_75_cleaned.fastq > all_R1_cleaned.fastq```
@@ -695,25 +686,107 @@ done'```
 
 ```/usr/local/opt/trinityrnaseq/util/abundance_estimates_to_matrix.pl --est_method RSEM --out_prefix isoforms_counts_matrix 12-14.isoforms.results 12-2.isoforms.results 12-7.isoforms.results 13-10.isoforms.results 13-13.isoforms.results 13-9.isoforms.results 14-11.isoforms.results 14-12.isoforms.results 14-8.isoforms.results 15-3.isoforms.results 15-6.isoforms.results```
 
-scp hputnam@galaxy.geodata.hawaii.edu:~/Pdam_Taiwan_2010/RSEM/isoforms_counts_matrix.counts.matrix /Users/hputnam/MyProjects/Taiwan_Pacuta_adult_GCC/RAnalysis/Data/
+```scp hputnam@galaxy.geodata.hawaii.edu:~/Pdam_Taiwan_2010/RSEM/isoforms_counts_matrix.counts.matrix /Users/hputnam/MyProjects/Taiwan_Pacuta_adult_GCC/RAnalysis/Data/```
 
 # Run Differential Expression Analysis
 
-/usr/local/opt/trinityrnaseq/Analysis/DifferentialExpression/run_DE_analysis.pl --matrix ~/Pdam_Taiwan_2010/isoforms_counts_matrix.counts.matrix --method edgeR --samples_file /home/hputnam/Mcap_Spawn/Refs/sample_description.txt 
+* See R script for DEG
 
-# Cluster DEG_fpkm
-/usr/local/opt/trinityrnaseq/Analysis/DifferentialExpression/analyze_diff_expr.pl --matrix /home/hputnam/Mcap_Spawn/RSEM/isoforms_counts_matrix.TMM.fpkm.matrix -P 0.05 -C 0 --samples /home/hputnam/Mcap_Spawn/Refs/sample_description.txt 
+# Split into Host and Symbiodinium and other contigs
 
+Coral host reference = Coral.fa
+* A_digitifera.fa obtained from OIST Shinzato et al 
+* Mcavernosa from Matz lab
+* Orbicella from Prada et al 2016
+* Stylophora pistillata from Voolstra et al 2017
 
-# Cluster Expression Profiles
-/usr/local/opt/trinityrnaseq/Analysis/DifferentialExpression//define_clusters_by_cutting_tree.pl \
--R  diffExpr.P0.05_C0.matrix.RData --Ptree 60
-
-# Split into Host and Symbiodinium contigs
-
-# Repeat DEG
+```cat A_digitifera.fa gsd1_racon2.fasta MPSW01.1.fsa_nt Spis.genome.scaffold.final.fa > Coral.fa```
 
 
+Symbiodinium reference = Symbiodinium.fa
+Pinzon et al and Aranda et al 
+* B1 - Shoguchi E et al. 2013, S. minutum (type B1, strain Mf1.05b; 76284 contigs—45263394bp from the host O. faveolata Bayer et al 2012 
+* A3 - genomic sequences from cultured Symbiodinium types S. fitti (type A3; 97 259 contigs—21 653 717 bp) Pinzon et al 2015
+* C1 - genomic sequences from cultured Symbiodinium types C1 (82 331 contigs—44 078 667 bp) Pinzon et al 2015
+* A - transcriptome data from S. microadriaticum (type A, KB8 strain—72152 contigs—61869232bp from the host Cassiopeia spp.) Pinzon et al 2015
+* F - Lin et al 2015
+* A - Aranda et al 2016
+
+Bacterial reference = Bacteria.fa
+
+```wget "ftp://ftp.ncbi.nlm.nih.gov/genomes/genbank/bacteria/assembly_summary.txt"```
+
+```awk -F '\t' '{if($12=="Complete Genome") print $20}' assembly_summary.txt > assembly_summary_complete_genomes.txt```
+
+
+```mkdir GbBac```
+
+```nohup sh -c 'for next in $(cat assembly_summary_complete_genomes.txt); do wget -P GbBac "$next"/*[^m]_genomic.fna.gz; done'```
+
+```gunzip GbBac/*.gz```
+
+```cat GbBac/*.fna > Bacteria.fa```
+
+Viral reference = viruses.fa
+http://darwin.informatics.indiana.edu/col/courses/L519/Lab/Lab1/gb2fasta2.pl.txt
+
+```wget "http://www.phantome.org/Downloads/genomes/genbank/2017-06-01.tgz"```
+
+```tar xvzf 2017-06-01.tgz```
+
+```for next in $(ls 2017-06-01); do perl gb2fasta2.pl -gbk 2017-06-01/"$next" -fasta 2017-06-01/"$next".fasta; done```
+
+```cat 2017-06-01/*.fasta > viruses.fa```
+
+
+##### Make Blast dbs and blast assembly against references
+
+
+```makeblastdb -in Symbiodinium.fa -dbtype nucl```
+
+```nohup ~/programs/ncbi-blast-2.6.0+/bin/blastn -query ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta -db ~/Refs/Symbiodinium.fa -num_threads 30 -max_target_seqs 1 -max_hsps 1 -outfmt 6 > sym.outfmt6```
+
+```makeblastdb -in Coral.fa -dbtype nucl```
+
+```nohup ~/programs/ncbi-blast-2.6.0+/bin/blastn -query ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta -db ~/Refs/Coral.fa -num_threads 30 -max_target_seqs 1 -max_hsps 1 -outfmt 6 > coral.outfmt6```
+
+```makeblastdb -in Bacteria.fa -dbtype nucl```
+
+```nohup ~/programs/ncbi-blast-2.6.0+/bin/blastn -query ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta -db ~/Refs/Bacteria.fa -num_threads 30 -max_target_seqs 1 -max_hsps 1 -outfmt 6 > bacteria.outfmt6```
+
+```makeblastdb -in viruses.fa -dbtype nucl```
+
+```nohup ~/programs/ncbi-blast-2.6.0+/bin/blastn -query ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta -db ~/Refs/viruses.fa -num_threads 30 -max_target_seqs 1 -max_hsps 1 -outfmt 6 > viruses.outfmt6```
+
+
+* header info for blast results
+query_id        subject_id      pct_identity    aln_length      n_of_mismatches gap_openings    q_start q_end   s_start   s_end   e_value bit_score
+
+Initial Hits
+* 179476 Coral
+* 35502 Symbiodinium
+* 3019 Bacteria
+* 14 virus
+
+filtered by evalue <1e-5
+* 178067 Coral
+* 34279 Symbiodinium
+* 1699 Bacteria
+* 12 virus
+
+Need to confirm if there are hits to multiple compartments... may blast against a fully concatenated database?
+
+
+
+# Blast non-hits against http://reefgenomics.org/blast/
+
+subset out non-hits and blast against all corals and Symbiodinium on reefgenomics.org/blast/
+
+
+# Repeat Differential Expression Analysis
+
+* Done in R
+* Host is majority of DEG
 
 
 
@@ -737,23 +810,34 @@ scp hputnam@galaxy.geodata.hawaii.edu:~/Pdam_Taiwan_2010/RSEM/isoforms_counts_ma
 
 #### BLASTp
 
-```nohup ~/programs/ncbi-blast-2.6.0+/bin/blastp -query ~/Pdam_Taiwan_2010/Annot/Transdecoder/Trinity.fasta.transdecoder.pep -db ~/programs/Trinotate-3.0.1/uniprot_sprot.pep -num_threads 30 -max_target_seqs 1 -outfmt 6 > blastp.outfmt6
+```nohup ~/programs/ncbi-blast-2.6.0+/bin/blastp -query ~/Pdam_Taiwan_2010/Annot/Transdecoder/Trinity.fasta.transdecoder.pep -db ~/programs/Trinotate-3.0.1/uniprot_sprot.pep -num_threads 30 -max_target_seqs 1 -outfmt 6 > blastp.outfmt6```
 
 #### HMMER
 
-```nohup ~/programs/hmmer-3.1b2-linux-intel-x86_64/binaries/hmmscan --cpu 30 --domtblout TrinotatePFAM.out ~/programs/Trinotate-3.0.1/Pfam-A.hmm ~/Pdam_Taiwan_2010/Annot/Transdecoder/Trinity.fasta.transdecoder.pep > pfam.log
+```nohup ~/programs/hmmer-3.1b2-linux-intel-x86_64/binaries/hmmscan --cpu 30 --domtblout TrinotatePFAM.out ~/programs/Trinotate-3.0.1/Pfam-A.hmm ~/Pdam_Taiwan_2010/Annot/Transdecoder/Trinity.fasta.transdecoder.pep > pfam.log```
 
 #### signalP
 
-```nohup ~/programs/signalp-4.1/signalp -f short -n signalp.out ~/Pdam_Taiwan_2010/Annot/Transdecoder/Trinity.fasta.transdecoder.pep
+```nohup ~/programs/signalp-4.1/signalp -f short -n signalp.out ~/Pdam_Taiwan_2010/Annot/Transdecoder/Trinity.fasta.transdecoder.pep```
+
+* ran, but stored output in nohup?
+
+
 
 #### tmHMM
 
-```nohup ~/programs/tmhmm-2.0c/bin/tmhmm --short < ~/Pdam_Taiwan_2010/Annot/Transdecoder/Trinity.fasta.transdecoder.pep > tmhmm.out
+```nohup ~/programs/tmhmm-2.0c/bin/tmhmm --short < ~/Pdam_Taiwan_2010/Annot/Transdecoder/Trinity.fasta.transdecoder.pep > tmhmm.out```
 
 #### RNAMMER
 
-```nohup ~/programs/Trinotate-3.0.1/util/rnammer_support/RnammerTranscriptome.pl --transcriptome ~/Mcap_Spawn/Assembly/trinity_out_dir/Trinity.fasta --path_to_rnammer ~/programs/rnammer
+```nohup ~/programs/Trinotate-3.0.1/util/rnammer_support/RnammerTranscriptome.pl --transcriptome ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta --path_to_rnammer ~/programs/rnammer```
+
+CMD: perl /home/hputnam/programs/rnammer -S euk -m tsu,lsu,ssu -gff tmp.superscaff.rnammer.gff < transcriptSuperScaffold.fasta
+Can't open perl script "/usr/cbs/bio/src/rnammer-1.2/core-rnammer": No such file or directory
+
+Error, cmd: perl /home/hputnam/programs/rnammer -S euk -m tsu,lsu,ssu -gff tmp.superscaff.rnammer.gff < transcriptSuperScaffold.fasta died with ret 256 at /home/hputnam/programs/Trinotate-3.0.1/util/rnammer_support/RnammerTranscriptome.pl line 80.
+
+* see here for fix? https://trinotate.github.io/ 1. Software Required
 
 # Build Trinotate SQLite Database
 
@@ -799,7 +883,7 @@ scp hputnam@galaxy.geodata.hawaii.edu:~/Pdam_Taiwan_2010/RSEM/isoforms_counts_ma
 
 
 input file 
-* /home/hputnam/Mcap_Spawn/Annot/TransDecoder/Trinity.fasta.transdecoder.pep
+* ISP.input.predicted.pep
 
 ```mkdir IPS```
 
@@ -815,13 +899,7 @@ input file
 ### Prepare data for input to IPS
 
 ##### Prepare input file by Removing astrix
-```sed 's_*__g' /home/hputnam/Mcap_Spawn/Annot/TransDecoder/Trinity.fasta.transdecoder.pep > ISP.input.predicted.pep```
-
-##### run a test of IPS on our data 
-
-```nano Mcap_test.pep```
-
-```~/programs/my_interproscan/interproscan-5.23-62.0/interproscan.sh -i Mcap_test.pep -f tsv```
+```sed 's_*__g' ~/Pdam_Taiwan_2010/Annot/Transdecoder/Trinity.fasta.transdecoder.pep > ISP.input.predicted.pep```
 
 The version of InterProScan you are using is 5.23-62.0
 The version of the lookup service you are using is 5.24-63.0
@@ -849,7 +927,7 @@ In the meantime, the analysis will continue to run locally
 ##### Run IPS
 
 ```nohup ~/programs/my_interproscan/interproscan-5.23-62.0/interproscan.sh \
--d ~/Mcap_Spawn/Annot/IPS \
+-d ~/Pdam_Taiwan_2010/Annot/IPS \
 -dp \
 -i ISP.input.predicted.pep \
 -f tsv```
