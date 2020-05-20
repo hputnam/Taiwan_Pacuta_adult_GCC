@@ -26,7 +26,7 @@ library(GSEABase)
 setwd("/Users/hputnam/MyProjects/Taiwan_Pacuta_adult_GCC/RAnalysis/Data/") #set working directory
 
 counts <- read.csv(file="isoforms_counts_matrix.counts.matrix", header=T, sep="") #Load expressin matrix from trinity
-#annot <- read.csv(file="trinotate_annotation_report.csv", header=T)
+annot <- read.csv(file="trinotate_annotation_report.csv", header=T)
 #annotation <- annotation[match(rownames(counts), annot$Pfam),]
 
 #Filter reads by proportion of samples containing the cutoff value
@@ -214,15 +214,13 @@ legend(x="bottomright",
        cex=1)
 dev.off()
 
-topVarGenes <- head(order(rowVars(assay(Unique.rsig)),decreasing=TRUE), Unique.sig.num) #can choose a subset of transcripts for viewing
-mat <- assay(Unique.rsig)[ topVarGenes, ] #make an expression object
-mat <- mat - rowMeans(mat) #difference in expression compared to average across all samples
+mat <- assay(Unique.rsig) #make an expression object
 mat <- mat[,col.order]
 df <- as.data.frame(colData(Interact.rsig)[,c("CO2","Temperature")]) #make dataframe
 ann_colors <- list(Temperature = c(Ambient="blue", High="red"), CO2 = c(Ambient= "gray", High= "black")) #manually set colors
 dev.off()
 jpeg(file="/Users/hputnam/MyProjects/Taiwan_Pacuta_adult_GCC/RAnalysis/Output/Unique_Heatmap.DEG.jpg") #save file
-pheatmap(mat, annotation_col=df, annotation_colors=ann_colors,
+pheatmap(mat, annotation_col=df, annotation_colors=ann_colors, scale="row",
          show_rownames =F, cluster_cols = FALSE,
          show_colnames =F) #plot heatmap of all DEG by group
 dev.off()
@@ -281,8 +279,10 @@ enriched.GO.05<-data.frame(enriched.GO.05.a)
 colnames(enriched.GO.05) <- c("category")
 enriched.GO.05 <- merge(enriched.GO.05, GO.wall, by="category")
 
+All.sig.GO <- as.data.frame(enriched.GO.05)
+  
 MF <- subset(enriched.GO.05, ontology=="MF")
-MF <- MF[order(-MF$numDEInCat),]
+MF <- MF[order(MF$numDEInCat),]
 MF <- subset(MF, numDEInCat>2) #remove terms with zero counts
 barplot(MF$numDEInCat, horiz = TRUE , xlim = c(0,16), names.arg=MF$term, las=1, 
         cex.axis=0.5, cex.names=0.5)
@@ -292,7 +292,7 @@ lbls <- MF$term
 pie(slices, labels = lbls, main="Molecular Function")
 
 BP <- subset(enriched.GO.05, ontology=="BP")
-BP <- BP[order(-BP$numDEInCat),]
+BP <- BP[order(BP$numDEInCat),]
 BP <- subset(BP, numDEInCat>2) #remove terms with zero counts
 barplot(BP$numDEInCat, horiz = TRUE , xlim = c(0,16), names.arg=BP$term, las=1, 
         cex.axis=0.5, cex.names=0.5)
@@ -302,7 +302,7 @@ lbls <- BP$term
 pie(slices, labels = lbls, main="Biological Process")
 
 CC <- subset(enriched.GO.05, ontology=="CC")
-CC <- CC[order(-CC$numDEInCat),]
+CC <- CC[order(CC$numDEInCat),]
 CC <- subset(CC, numDEInCat>2) #remove terms with zero counts
 barplot(CC$numDEInCat, horiz = TRUE , xlim = c(0,16), names.arg=CC$term, las=1, 
         cex.axis=0.5, cex.names=0.5)
@@ -324,7 +324,8 @@ barplot(BP$numDEInCat, horiz = TRUE , xlim = c(0,36), names.arg=BP$term, las=1,
 dev.off()
 
 
-
+#####
+#Annotation
 
 
 

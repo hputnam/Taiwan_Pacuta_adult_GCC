@@ -699,18 +699,22 @@ Coral host reference = Coral.fa
 * Mcavernosa from Matz lab
 * Orbicella from Prada et al 2016
 * Stylophora pistillata from Voolstra et al 2017
+* Mcapitata
 
-```cat A_digitifera.fa gsd1_racon2.fasta MPSW01.1.fsa_nt Spis.genome.scaffold.final.fa > Coral.fa```
+```cat A_digitifera.fa gsd1_racon2.fasta MPSW01.1.fsa_nt Spis.genome.scaffold.final.fa 20170313.mcap.falcon.errd.fasta > Coral.fa```
 
 
 Symbiodinium reference = Symbiodinium.fa
 Pinzon et al and Aranda et al 
 * B1 - Shoguchi E et al. 2013, S. minutum (type B1, strain Mf1.05b; 76284 contigs—45263394bp from the host O. faveolata Bayer et al 2012 
 * A3 - genomic sequences from cultured Symbiodinium types S. fitti (type A3; 97 259 contigs—21 653 717 bp) Pinzon et al 2015
-* C1 - genomic sequences from cultured Symbiodinium types C1 (82 331 contigs—44 078 667 bp) Pinzon et al 2015
+* C1 - genomic sequences from cultured Symbiodinium types C1 (82 331 contigs—44 078 667 bp) Pinzon et al 2015* 
 * A - transcriptome data from S. microadriaticum (type A, KB8 strain—72152 contigs—61869232bp from the host Cassiopeia spp.) Pinzon et al 2015
 * F - Lin et al 2015
 * A - Aranda et al 2016
+
+```cat Smic_Sym.fa Pinzon_Sym.fa > Symbiodinium.fa```
+
 
 Bacterial reference = Bacteria.fa
 
@@ -744,38 +748,32 @@ http://darwin.informatics.indiana.edu/col/courses/L519/Lab/Lab1/gb2fasta2.pl.txt
 
 ```makeblastdb -in Symbiodinium.fa -dbtype nucl```
 
-```nohup ~/programs/ncbi-blast-2.6.0+/bin/blastn -query ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta -db ~/Refs/Symbiodinium.fa -num_threads 30 -max_target_seqs 1 -max_hsps 1 -outfmt 6 > sym.outfmt6```
+nohup ~/programs/ncbi-blast-2.6.0+/bin/blastn -query ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta -db ~/Refs/Symbiodinium.fa -num_threads 30 -evalue 1e-5 -max_target_seqs 1 -max_hsps 1 -outfmt 6 > sym.outfmt6```
 
 ```makeblastdb -in Coral.fa -dbtype nucl```
 
-```nohup ~/programs/ncbi-blast-2.6.0+/bin/blastn -query ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta -db ~/Refs/Coral.fa -num_threads 30 -max_target_seqs 1 -max_hsps 1 -outfmt 6 > coral.outfmt6```
+```nohup ~/programs/ncbi-blast-2.6.0+/bin/blastn -query ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta -db ~/Refs/Coral.fa -num_threads 30 -evalue 1e-5 -max_target_seqs 1 -max_hsps 1 -outfmt 6 > coral.outfmt6```
 
 ```makeblastdb -in Bacteria.fa -dbtype nucl```
 
-```nohup ~/programs/ncbi-blast-2.6.0+/bin/blastn -query ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta -db ~/Refs/Bacteria.fa -num_threads 30 -max_target_seqs 1 -max_hsps 1 -outfmt 6 > bacteria.outfmt6```
+```nohup ~/programs/ncbi-blast-2.6.0+/bin/blastn -query ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta -db ~/Refs/Bacteria.fa -num_threads 30 -evalue 1e-5 -max_target_seqs 1 -max_hsps 1 -outfmt 6 > bacteria.outfmt6```
 
 ```makeblastdb -in viruses.fa -dbtype nucl```
 
-```nohup ~/programs/ncbi-blast-2.6.0+/bin/blastn -query ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta -db ~/Refs/viruses.fa -num_threads 30 -max_target_seqs 1 -max_hsps 1 -outfmt 6 > viruses.outfmt6```
+```nohup ~/programs/ncbi-blast-2.6.0+/bin/blastn -query ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta -db ~/Refs/viruses.fa -num_threads 30 -evalue 1e-5 -max_target_seqs 1 -max_hsps 1 -outfmt 6 > viruses.outfmt6```
 
 
 * header info for blast results
 query_id        subject_id      pct_identity    aln_length      n_of_mismatches gap_openings    q_start q_end   s_start   s_end   e_value bit_score
 
-Initial Hits
-* 179476 Coral
-* 35502 Symbiodinium
-* 3019 Bacteria
-* 14 virus
-
+BLAST Against DBs
 filtered by evalue <1e-5
-* 178067 Coral
-* 34279 Symbiodinium
-* 1699 Bacteria
+* 179120 Coral
+* 34252 Symbiodinium
+* 1685 Bacteria
 * 12 virus
 
 Need to confirm if there are hits to multiple compartments... may blast against a fully concatenated database?
-
 
 
 # Blast non-hits against http://reefgenomics.org/blast/
@@ -783,7 +781,16 @@ Need to confirm if there are hits to multiple compartments... may blast against 
 subset out non-hits and blast against all corals and Symbiodinium on reefgenomics.org/blast/
 
 
-# Repeat Differential Expression Analysis
+#KEGG
+
+* http://www.genome.jp/kaas-bin/kaas_main?mode=interactive
+hsa, mmu, rno, dre, dme, cel, ath, sce, ago, cal, spo, ecu, pfa, cho, ehi, eco, nme, hpy, bsu, lla, mge, mtu, syn, aae, mja, ape, nve, hmg
+
+http://www.genome.jp/kaas-bin/kaas_main?mode=user&id=1509938042&key=7nAvo0P5
+
+
+
+# Repeat Differential Expression Analysis for compartment specific?
 
 * Done in R
 * Host is majority of DEG
@@ -797,80 +804,144 @@ subset out non-hits and blast against all corals and Symbiodinium on reefgenomic
 # Annotation with Trinotate
 
 #### BLASTx
+mkdir BLAST
+cd BLAST
 
-```nohup ~/programs/ncbi-blast-2.6.0+/bin/blastx -query ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta -db ~/programs/Trinotate-3.0.1/uniprot_sprot.pep -num_threads 30 -max_target_seqs 1 -outfmt 6 > blastx.outfmt6```
+```nohup ~/programs/ncbi-blast-2.6.0+/bin/blastx -query ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta -db ~/Pdam_Taiwan_2010/Annot/Trinotate/uniprot_sprot.pep -num_threads 40 -max_target_seqs 1 -outfmt 6 > blastx.outfmt6```
+
+cd ~/Pdam_Taiwan_2010/Annot/
 
 #### TransDecoder
 
 ```mkdir Transdecoder```
+```cd Transdecoder```
 
 ```nohup /home/hputnam/programs/TransDecoder-3.0.1/TransDecoder.LongOrfs -t ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta```
 
-```nohup ~/programs/TransDecoder-3.0.1/TransDecoder.Predict --cpu 30 -t ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta```
+
+* Use file: Trinity.fasta.transdecoder_dir/longest_orfs.pep  for Pfam and/or BlastP searches to enable homology-based coding region identification.
+
+* Then, run TransDecoder.Predict for your final coding region predictions.
+
+```cd ~/Pdam_Taiwan_2010/Annot/```
 
 #### BLASTp
+```cd BLAST```
 
-```nohup ~/programs/ncbi-blast-2.6.0+/bin/blastp -query ~/Pdam_Taiwan_2010/Annot/Transdecoder/Trinity.fasta.transdecoder.pep -db ~/programs/Trinotate-3.0.1/uniprot_sprot.pep -num_threads 30 -max_target_seqs 1 -outfmt 6 > blastp.outfmt6```
+```nohup ~/programs/ncbi-blast-2.6.0+/bin/blastp -query ~/Pdam_Taiwan_2010/Annot/Transdecoder/Trinity.fasta.transdecoder_dir/longest_orfs.pep -db ~/Pdam_Taiwan_2010/Annot/Trinotate/uniprot_sprot.pep -num_threads 40 -max_target_seqs 1 -outfmt 6 > blastp.outfmt6```
+
+```cd ~/Pdam_Taiwan_2010/Annot/```
 
 #### HMMER
+```mkdir HMMER```
+```cd HMMER```
 
-```nohup ~/programs/hmmer-3.1b2-linux-intel-x86_64/binaries/hmmscan --cpu 30 --domtblout TrinotatePFAM.out ~/programs/Trinotate-3.0.1/Pfam-A.hmm ~/Pdam_Taiwan_2010/Annot/Transdecoder/Trinity.fasta.transdecoder.pep > pfam.log```
+```nohup ~/programs/hmmer-3.1b2-linux-intel-x86_64/binaries/hmmscan --cpu 50 --domtblout TrinotatePFAM.out ~/Pdam_Taiwan_2010/Annot/Trinotate/Pfam-A.hmm ~/Pdam_Taiwan_2010/Annot/Transdecoder/Trinity.fasta.transdecoder_dir/longest_orfs.pep > pfam.log```
+
+```cd ~/Pdam_Taiwan_2010/Annot/```
+
+#### Transdecoder Predict
+
+```nohup /home/hputnam/programs/TransDecoder-3.0.1/TransDecoder.Predict --cpu 40 -t ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta  --retain_pfam_hits ~/Pdam_Taiwan_2010/Annot/HMMER/TrinotatePFAM.out --retain_blastp_hits ~/Pdam_Taiwan_2010/Annot/BLAST/blastp.outfmt6```
+
+***"The final coding region predictions will now include both those regions that have sequence characteristics consistent with coding regions in addition to those that have demonstrated blast homology or pfam domain content"***
 
 #### signalP
 
 ```nohup ~/programs/signalp-4.1/signalp -f short -n signalp.out ~/Pdam_Taiwan_2010/Annot/Transdecoder/Trinity.fasta.transdecoder.pep```
 
-* ran, but stored output in nohup?
-
+* Changed script to max input of 1,000,000 seqs
 
 
 #### tmHMM
+```mkdir tmHMM```
+```cd tmHMM```
 
 ```nohup ~/programs/tmhmm-2.0c/bin/tmhmm --short < ~/Pdam_Taiwan_2010/Annot/Transdecoder/Trinity.fasta.transdecoder.pep > tmhmm.out```
 
 #### RNAMMER
+mkdir RNAMMER
+cd RNAMMER
 
-```nohup ~/programs/Trinotate-3.0.1/util/rnammer_support/RnammerTranscriptome.pl --transcriptome ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta --path_to_rnammer ~/programs/rnammer```
+```nohup /home/hputnam/programs/Trinotate-3.0.1/util/rnammer_support/RnammerTranscriptome.pl --transcriptome ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta --path_to_rnammer ~/programs/rnammer```
 
-CMD: perl /home/hputnam/programs/rnammer -S euk -m tsu,lsu,ssu -gff tmp.superscaff.rnammer.gff < transcriptSuperScaffold.fasta
-Can't open perl script "/usr/cbs/bio/src/rnammer-1.2/core-rnammer": No such file or directory
 
-Error, cmd: perl /home/hputnam/programs/rnammer -S euk -m tsu,lsu,ssu -gff tmp.superscaff.rnammer.gff < transcriptSuperScaffold.fasta died with ret 256 at /home/hputnam/programs/Trinotate-3.0.1/util/rnammer_support/RnammerTranscriptome.pl line 80.
-
-* see here for fix? https://trinotate.github.io/ 1. Software Required
 
 # Build Trinotate SQLite Database
 
-```~/programs/trinityrnaseq-Trinity-v2.4.0/util/support_scripts/get_Trinity_gene_to_trans_map.pl ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta >  Trinity.fasta.gene_trans_map
+~/programs/Trinotate-3.0.1/admin/Build_Trinotate_Boilerplate_SQLite_db.pl  Trinotate```
+
+```~/programs/trinityrnaseq-Trinity-v2.4.0/util/support_scripts/get_Trinity_gene_to_trans_map.pl ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta >  Trinity.fasta.gene_trans_map```
 
 #### Load transcripts and coding regions
 
-```~/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite init --gene_trans_map ~/Pdam_Taiwan_2010/Annot/SQL_DB/Trinity.fasta.gene_trans_map --transcript_fasta ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta --transdecoder_pep ~/Pdam_Taiwan_2010/Annot/Transdecoder/Trinity.fasta.transdecoder.pep
+```~/programs/Trinotate-3.0.1/Trinotate ~/Pdam_Taiwan_2010/Annot/Trinotate/Trinotate.sqlite init --gene_trans_map ~/Pdam_Taiwan_2010/Annot/SQL/Trinity.fasta.gene_trans_map --transcript_fasta ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta --transdecoder_pep ~/Pdam_Taiwan_2010/Annot/Transdecoder/Trinity.fasta.transdecoder.pep```
 
 #### Load BLAST homologies
 
-```~/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_swissprot_blastp ~/Pdam_Taiwan_2010/Annot/pep/blastp.outfmt6
+```~/programs/Trinotate-3.0.1/Trinotate ~/Pdam_Taiwan_2010/Annot/Trinotate/Trinotate.sqlite LOAD_swissprot_blastp ~/Pdam_Taiwan_2010/Annot/BLAST/blastp.outfmt6```
 
-```/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_swissprot_blastx ~/Pdam_Taiwan_2010/Annot/blastx.outfmt6
+```~/programs/Trinotate-3.0.1/Trinotate ~/Pdam_Taiwan_2010/Annot/Trinotate/Trinotate.sqlite LOAD_swissprot_blastx ~/Pdam_Taiwan_2010/Annot/BLAST/blastx.outfmt6```
 
 #### Load PFAM 
 
-```/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_pfam ~/Pdam_Taiwan_2010/Annot/HMM/TrinotatePFAM.out
+```/home/hputnam/programs/Trinotate-3.0.1/Trinotate ~/Pdam_Taiwan_2010/Annot/Trinotate/Trinotate.sqlite LOAD_pfam ~/Pdam_Taiwan_2010/Annot/HMMER/TrinotatePFAM.out```
 
 
 #### Load transmembrane domains
 
-```/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_tmhmm ~/Pdam_Taiwan_2010/Annot/tmHH/tmhmm.out
+```/home/hputnam/programs/Trinotate-3.0.1/Trinotate ~/Pdam_Taiwan_2010/Annot/Trinotate/Trinotate.sqlite LOAD_tmhmm ~/Pdam_Taiwan_2010/Annot/tmHMM/tmhmm.out```
 
 #### Load signal peptide predictions
 
-```/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite LOAD_signalp ~/Pdam_Taiwan_2010/Annot/SP/signalp.out
+```/home/hputnam/programs/Trinotate-3.0.1/Trinotate ~/Pdam_Taiwan_2010/Annot/Trinotate/Trinotate.sqlite LOAD_signalp ~/Pdam_Taiwan_2010/Annot/SignalP/signalp.out```
 
 #### Output Annotation Report
 
-```/home/hputnam/programs/Trinotate-3.0.1/Trinotate Trinotate.sqlite report > trinotate_annotation_report.xls
+```/home/hputnam/programs/Trinotate-3.0.1/Trinotate ~/Pdam_Taiwan_2010/Annot/Trinotate/Trinotate.sqlite report > trinotate_annotation_report.xls```
 
-```scp hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/Annot/SQL_DB/trinotate_annotation_report.xls /Users/hputnam/MyProjects/Montipora_Spawn_Timing/RAnalysis/Data
+```scp hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Mcap_Spawn/Annot/Trinotate/trinotate_annotation_report.xls /Users/hputnam/MyProjects/Taiwan_Pacuta_adult_GCC/RAnalysis/Data```
+
+
+#### Extract GO terms 
+
+```/home/hputnam/programs/Trinotate-3.0.1/util/extract_GO_assignments_from_Trinotate_xls.pl \
+--Trinotate_xls ~/Pdam_Taiwan_2010/Annot/Trinotate/trinotate_annotation_report.xls \
+-T \
+> ~/Pdam_Taiwan_2010/Annot/Trinotate/go_annotations.txt```
+
+```sed 's/,/;/g' ~/Pdam_Taiwan_2010/Annot/Trinotate/go_annotations.txt > GO_for_MWU.txt```
+
+```scp hputnam@galaxy.geodata.hawaii.edu:~/Pdam_Taiwan_2010/Annot/Trinotate/GO_for_MWU.txt /Users/hputnam/MyProjects/Taiwan_Pacuta_adult_GCC/RAnalysis/Data```
+
+```scp hputnam@galaxy.geodata.hawaii.edu:~/Pdam_Taiwan_2010/Annot/Trinotate/go_annotations.txt /Users/hputnam/MyProjects/Taiwan_Pacuta_adult_GCC/RAnalysis/Data```
+
+##### Extract Gene Lengths
+```/home/hputnam/programs/trinityrnaseq-Trinity-v2.4.0/util/misc/fasta_seq_length.pl  ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta > ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta.seq_len```
+
+```/home/hputnam/programs/trinityrnaseq-Trinity-v2.4.0/util/misc/TPM_weighted_gene_length.py  \
+--gene_trans_map ~/Pdam_Taiwan_2010/Annot/SQL/Trinity.fasta.gene_trans_map \
+--trans_lengths  ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta.seq_len \
+--TPM_matrix ~/Pdam_Taiwan_2010/RSEM/isoforms_counts_matrix.counts.matrix > ~/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.gene_lengths.txt```
+
+```scp hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.fasta.seq_len /Users/hputnam/MyProjects/Taiwan_Pacuta_adult_GCC/RAnalysis/Data```
+
+```scp hputnam@galaxy.geodata.hawaii.edu:/home/hputnam/Pdam_Taiwan_2010/Assembly_Data/Trinity_Output/trinity_out_dir/Trinity.gene_lengths.txt /Users/hputnam/MyProjects/Taiwan_Pacuta_adult_GCC/RAnalysis/Data```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #### InterProScan
