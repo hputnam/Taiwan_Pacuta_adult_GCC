@@ -14,7 +14,7 @@ library("RColorBrewer")
 library("genefilter")
 library("ggplot2")
 library("gplots")
-library("limma")
+library("tidyverse")
 library("spdep") 
 library("adegenet")
 library("UpSetR")
@@ -23,20 +23,24 @@ library("GO.db")
 library(GSEABase)
 
 #############################################################
-setwd("/Users/hputnam/MyProjects/Taiwan_Pacuta_adult_GCC/RAnalysis/Data/") #set working directory
 
-counts <- read.csv(file="isoforms_counts_matrix.counts.matrix", header=T, sep="") #Load expressin matrix from trinity
-annot <- read.csv(file="trinotate_annotation_report.csv", header=T)
-#annotation <- annotation[match(rownames(counts), annot$Pfam),]
+counts <- read.csv(file="Data/Pact_gene_count_matrix.csv", header=T, sep=",") #Load expressin matrix from trinity
+row.names(counts) <- counts$gene_id
+counts <- counts[,-1]
+annot <- read.csv(file="Data/Pact_Functionnal_annotation_abinitio.txt", header=T, , sep="\t")
+annot$gene <- gsub(".*\\.(.*)\\..*", "\\1", annot$SeqName)
+annot <- distinct(annot, gene, .keep_all = TRUE)
+
+
 
 #Filter reads by proportion of samples containing the cutoff value
-filt <- filterfun(pOverA(0.50,5)) #set filter values for PoverA, P percent of the samples have counts over A
+filt <- filterfun(pOverA(0.5,5)) #set filter values for PoverA, P percent of the samples have counts over A
 tfil <- genefilter(counts, filt) #create filter for the counts data
 keep <- counts[tfil,] #identify transcripts to keep by count filter
 gn.keep <- rownames(keep) #identify transcript list
 counts.5x <- as.matrix(counts[which(rownames(counts) %in% gn.keep),]) #data filtered in PoverA, P percent of the samples have counts over A
 storage.mode(counts.5x) = "integer" #store counts data as integer
-sample.info <- read.csv(file="sample_description.csv", header=T, sep=",", row.names=1) #load sample info
+sample.info <- read.csv(file="Data/sample_description.csv", header=T, sep=",", row.names=1) #load sample info
 sample.info$group <- factor(paste0(sample.info$Temperature, sample.info$CO2)) #merge condition and time into group
 data <- DESeqDataSetFromMatrix(countData = counts.5x, colData = sample.info, design = ~ Temperature + CO2 + Temperature:CO2) #create a DESeqDataSet object
 
@@ -63,28 +67,27 @@ resultsNames(DEG.int) #view DE results
 
 Temperature.Res <- results(DEG.int, contrast=c("Temperature", "High", "Ambient"))
 Temperature.Res
-Temp.sig.num <- sum(Temperature.Res$padj <0.1, na.rm=T) #identify the number of significant p values with 10%FDR (padj<0.1)
-Temp.sig <- subset(Temperature.Res, padj<0.1,) #identify signficant pvalues with 10%FDR
+Temp.sig.num <- sum(Temperature.Res$padj <0.05, na.rm=T) #identify the number of significant p values with 10%FDR (padj<0.1)
+Temp.sig <- subset(Temperature.Res, padj<0.05,) #identify signficant pvalues with 10%FDR
 Temp.sig.list <- data[which(rownames(data) %in% rownames(Temp.sig)),] #subset list of sig transcripts from original count data
 Temp.rsig <- rlog(Temp.sig.list, blind=FALSE) #apply a regularized log transformation to minimize effects of small counts and normalize wrt library size
-write.csv(counts(Temp.sig.list), file="/Users/hputnam/MyProjects/Taiwan_Pacuta_adult_GCC/RAnalysis/Output/Temperature_DEG.csv")
-
+write.csv(counts(Temp.sig.list), file="Output/Temperature_DEG.csv")
 
 CO2.Res <- results(DEG.int, contrast=c("CO2", "High", "Ambient"))
 CO2.Res
-CO2.sig.num <- sum(CO2.Res$padj <0.1, na.rm=T) #identify the number of significant p values with 10%FDR (padj<0.1)
-CO2.sig <- subset(CO2.Res, padj<0.1,) #identify signficant pvalues with 10%FDR
+CO2.sig.num <- sum(CO2.Res$padj <0.05, na.rm=T) #identify the number of significant p values with 10%FDR (padj<0.1)
+CO2.sig <- subset(CO2.Res, padj<0.05,) #identify signficant pvalues with 10%FDR
 CO2.sig.list <- data[which(rownames(data) %in% rownames(CO2.sig)),] #subset list of sig transcripts from original count data
 CO2.rsig <- rlog(CO2.sig.list, blind=FALSE) #apply a regularized log transformation to minimize effects of small counts and normalize wrt library size
-write.csv(counts(CO2.sig.list), file="/Users/hputnam/MyProjects/Taiwan_Pacuta_adult_GCC/RAnalysis/Output/CO2_DEG.csv")
+write.csv(counts(CO2.sig.list), file="Output/CO2_DEG.csv")
 
 Interact.Res <- results(DEG.int, contrast=list(c("TemperatureHigh.CO2High")))
 Interact.Res
-Interact.sig.num <- sum(Interact.Res$padj <0.1, na.rm=T) #identify the number of significant p values with 10%FDR (padj<0.1)
-Interact.sig <- subset(Interact.Res, padj<0.1,) #identify signficant pvalues with 10%FDR
+Interact.sig.num <- sum(Interact.Res$padj <0.05, na.rm=T) #identify the number of significant p values with 10%FDR (padj<0.1)
+Interact.sig <- subset(Interact.Res, padj<0.05,) #identify signficant pvalues with 10%FDR
 Interact.sig.list <- data[which(rownames(data) %in% rownames(Interact.sig)),] #subset list of sig transcripts from original count data
 Interact.rsig <- rlog(Interact.sig.list, blind=FALSE) #apply a regularized log transformation to minimize effects of small counts and normalize wrt library size
-write.csv(counts(Interact.sig.list), file="/Users/hputnam/MyProjects/Taiwan_Pacuta_adult_GCC/RAnalysis/Output/TempxCO2_Interaction_DEG.csv")
+write.csv(counts(Interact.sig.list), file="Output/TempxCO2_Interaction_DEG.csv")
 
 ##### TEMPERATURE View DEG Data Heatmap and PCA #####
 PCA.plot <- plotPCA(Temp.rsig, intgroup = c("Temperature", "CO2")) #Plot PCA of all samples for DEG only
@@ -118,7 +121,7 @@ mat <- mat[,col.order]
 df <- as.data.frame(colData(Temp.rsig)[,c("CO2","Temperature")]) #make dataframe
 ann_colors <- list(Temperature = c(Ambient="blue", High="red"), CO2 = c(Ambient= "gray", High= "black")) #manually set colors
 dev.off()
-jpeg(file="/Users/hputnam/MyProjects/Taiwan_Pacuta_adult_GCC/RAnalysis/Output/Temperature_Heatmap.DEG.jpg") #save file
+jpeg(file="Output/Temperature_Heatmap.DEG.jpg") #save file
 pheatmap(mat, annotation_col=df, annotation_colors=ann_colors,
          show_rownames =F, cluster_cols=FALSE,
          show_colnames =T) #plot heatmap of all DEG by group
@@ -130,7 +133,7 @@ PCA.plot <- plotPCA(CO2.rsig, intgroup = c("Temperature", "CO2")) #Plot PCA of a
 PCA.plot #view plot
 PC.info <-PCA.plot$data #extract plotting data
 dev.off()
-jpeg(file="/Users/hputnam/MyProjects/Taiwan_Pacuta_adult_GCC/RAnalysis/Output/CO2_PCA.DEG.jpg")
+jpeg(file="Output/CO2_PCA.DEG.jpg")
 plot(PC.info$PC1, PC.info$PC2, xlab="PC1 59%", ylab="PC2 16%", pch = c(15, 16)[as.numeric(sample.info$CO2)], col=c("gray", "black")[sample.info$Temperature], cex=1.3)
 legend(x="topright", 
        bty="n",
@@ -147,7 +150,7 @@ mat <- mat[,col.order]
 df <- as.data.frame(colData(CO2.rsig)[,c("CO2","Temperature")]) #make dataframe
 ann_colors <- list(Temperature = c(Ambient="blue", High="red"), CO2 = c(Ambient= "gray", High= "black")) #manually set colors
 dev.off()
-jpeg(file="/Users/hputnam/MyProjects/Taiwan_Pacuta_adult_GCC/RAnalysis/Output/CO2_Heatmap.DEG.jpg") #save file
+jpeg(file="Output/CO2_Heatmap.DEG.jpg") #save file
 pheatmap(mat, annotation_col=df, annotation_colors=ann_colors,
          show_rownames =F, cluster_cols = FALSE,
          show_colnames =F) #plot heatmap of all DEG by group
@@ -159,7 +162,7 @@ PCA.plot <- plotPCA(Interact.rsig, intgroup = c("Temperature", "CO2")) #Plot PCA
 PCA.plot #view plot
 PC.info <-PCA.plot$data #extract plotting data
 dev.off()
-jpeg(file="/Users/hputnam/MyProjects/Taiwan_Pacuta_adult_GCC/RAnalysis/Output/Interaction_PCA.DEG.jpg")
+jpeg(file="Output/Interaction_PCA.DEG.jpg")
 plot(PC.info$PC1, PC.info$PC2, xlab="PC1 43%", ylab="PC2 21%", pch = c(15, 16)[as.numeric(sample.info$CO2)], col=c("gray", "black")[sample.info$Temperature], cex=1.3)
 legend(x="bottomright", 
        bty="n",
@@ -176,7 +179,7 @@ mat <- mat[,col.order]
 df <- as.data.frame(colData(Interact.rsig)[,c("CO2","Temperature")]) #make dataframe
 ann_colors <- list(Temperature = c(Ambient="blue", High="red"), CO2 = c(Ambient= "gray", High= "black")) #manually set colors
 dev.off()
-jpeg(file="/Users/hputnam/MyProjects/Taiwan_Pacuta_adult_GCC/RAnalysis/Output/Interaction_Heatmap.DEG.jpg") #save file
+jpeg(file="Output/Interaction_Heatmap.DEG.jpg") #save file
 pheatmap(mat, annotation_col=df, annotation_colors=ann_colors,
          show_rownames =F, cluster_cols = FALSE,
          show_colnames =F) #plot heatmap of all DEG by group
@@ -197,14 +200,14 @@ Unique.sig.num <- length(t(unique(DEGS.ALL)))
 
 Unique.sig.list <- data[which(rownames(data) %in% DEGS.ALL$DEGs),] #subset list of sig transcripts from original count data
 Unique.rsig <- rlog(Unique.sig.list, blind=FALSE) #apply a regularized log transformation to minimize effects of small counts and normalize wrt library size
-write.csv(counts(Unique.sig.list), file="/Users/hputnam/MyProjects/Taiwan_Pacuta_adult_GCC/RAnalysis/Output/Unique_DEG.csv")
+write.csv(counts(Unique.sig.list), file="Output/Unique_DEG.csv")
 
 
 PCA.plot <- plotPCA(Unique.rsig, intgroup = c("Temperature", "CO2")) #Plot PCA of all samples for DEG only
 PCA.plot #view plot
 PC.info <-PCA.plot$data #extract plotting data
 dev.off()
-jpeg(file="/Users/hputnam/MyProjects/Taiwan_Pacuta_adult_GCC/RAnalysis/Output/Unique_PCA.DEG.jpg")
+jpeg(file="Output/Unique_PCA.DEG.jpg")
 plot(PC.info$PC1, PC.info$PC2, xlab="PC1 42%", ylab="PC2 27%", pch = c(15, 16)[as.numeric(sample.info$CO2)], col=c("gray", "black")[sample.info$Temperature], cex=1.3)
 legend(x="bottomright", 
        bty="n",
@@ -219,9 +222,25 @@ mat <- mat[,col.order]
 df <- as.data.frame(colData(Interact.rsig)[,c("CO2","Temperature")]) #make dataframe
 ann_colors <- list(Temperature = c(Ambient="blue", High="red"), CO2 = c(Ambient= "gray", High= "black")) #manually set colors
 dev.off()
-jpeg(file="/Users/hputnam/MyProjects/Taiwan_Pacuta_adult_GCC/RAnalysis/Output/Unique_Heatmap.DEG.jpg") #save file
+jpeg(file="Output/Unique_Heatmap.DEG.jpg") #save file
 pheatmap(mat, annotation_col=df, annotation_colors=ann_colors, scale="row",
-         show_rownames =F, cluster_cols = FALSE,
+         show_rownames =T, fontsize_row = 4, cluster_cols = FALSE,
+         show_colnames =F) #plot heatmap of all DEG by group
+dev.off()
+
+Unique.DEG.annot <- as.data.frame(counts(Unique.sig.list))
+Unique.DEG.annot$gene <- row.names(Unique.DEG.annot)
+Unique.DEG.annot <- merge(Unique.DEG.annot, annot, by="gene")
+write.csv(Unique.DEG.annot, file="Output/Unique_DEG_annotated.csv")
+
+Unique.DEG.annot$ann.row <- paste0(Unique.DEG.annot$gene," ", Unique.DEG.annot$Description)
+rownames(Unique.DEG.annot) <- Unique.DEG.annot$ann.row
+mat <- as.matrix(Unique.DEG.annot[,2:12]) #make a matrix
+mat <- mat[,col.order]
+dev.off()
+pdf(file="Output/Unique_Heatmap.DEG.Annotated.pdf") #save file
+pheatmap(mat, annotation_col=df, annotation_colors=ann_colors, scale="row",
+         show_rownames =T, fontsize_row = 4, cluster_cols = FALSE,
          show_colnames =F) #plot heatmap of all DEG by group
 dev.off()
 
